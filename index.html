@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ANT China Supplier - Intelligent Freight Calculation System</title>
     
     <link rel="manifest" href="manifest.json">
@@ -374,42 +374,27 @@
         }
     </style>
     <script>
-        // PWA 注册脚本
-        <script>
-    // 1. 强化版离线注册逻辑
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => {
+        // 强化版 PWA 注册脚本
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => {
                     console.log('ANT Logistics: 离线模式已就绪');
-                    // 当发现新版本时，在后台静默准备
-                    reg.onupdatefound = () => {
-                        const installingWorker = reg.installing;
-                        installingWorker.onstatechange = () => {
-                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                console.log('新版本已缓存，下次启动生效');
-                            }
-                        };
-                    };
-                })
-                .catch(err => console.error('离线注册失败:', err));
-        });
-    }
+                }).catch(err => console.log('PWA 注册失败', err));
+            });
+        }
 
-    // 2. 屏幕适配逻辑 (针对你的 iPhone 14 Pro Max 优化)
-    (function() {
-        const viewport = document.querySelector('meta[name="viewport"]');
-        const updateViewport = () => {
-            if (window.innerWidth < 768) {
-                viewport.setAttribute('content', 'width=device-width, initial-scale=0.8, maximum-scale=5.0, minimum-scale=0.5, viewport-fit=cover');
-            } else {
-                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover');
-            }
-        };
-        updateViewport();
-        window.addEventListener('resize', updateViewport);
-    })();
-</script>
+        // 屏幕适配逻辑 (iPhone 14 Pro Max 优化)
+        (function() {
+            const setVp = () => {
+                const vp = document.querySelector('meta[name="viewport"]');
+                const content = window.innerWidth < 768 
+                    ? 'width=device-width, initial-scale=0.8, maximum-scale=5.0, viewport-fit=cover'
+                    : 'width=device-width, initial-scale=1.0, viewport-fit=cover';
+                vp.setAttribute('content', content);
+            };
+            setVp();
+            window.addEventListener('resize', setVp);
+        })();
     </script>
 </head>
 <body>
@@ -955,24 +940,24 @@
                 const sanitizedDates = orderDates.join('_').replace(/[\/\\:*?"<>|]/g, '-');
                 const filename = `${sanitizedName}_${sanitizedDates}.pdf`;
 
-                // --- 核心：原生分享逻辑 ---
-                const pdfBlob = doc.output('blob');
-                const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
+                // --- 优化后的原生分享逻辑 (针对 iOS 响应优化) ---
+                try {
+                    const pdfBlob = doc.output('blob');
+                    const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
 
-                if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-                    try {
+                    if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
                         await navigator.share({
                             files: [pdfFile],
                             title: filename,
                             text: `Freight Report for ${customerName}`
                         });
-                    } catch (err) {
-                        if (err.name !== 'AbortError') {
-                            doc.save(filename); // 分享失败则回退到普通下载
-                        }
+                    } else {
+                        doc.save(filename); // PC 端直接下载
                     }
-                } else {
-                    doc.save(filename); // 不支持分享的浏览器则普通下载
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        doc.save(filename); // 分享出错回退到下载
+                    }
                 }
             });
             loadData();
