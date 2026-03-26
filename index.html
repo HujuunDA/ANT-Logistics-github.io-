@@ -375,18 +375,41 @@
     </style>
     <script>
         // PWA 注册脚本
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
+        <script>
+    // 1. 强化版离线注册逻辑
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => {
+                    console.log('ANT Logistics: 离线模式已就绪');
+                    // 当发现新版本时，在后台静默准备
+                    reg.onupdatefound = () => {
+                        const installingWorker = reg.installing;
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('新版本已缓存，下次启动生效');
+                            }
+                        };
+                    };
+                })
+                .catch(err => console.error('离线注册失败:', err));
+        });
+    }
 
-        (function() {
-            const viewport = document.querySelector('meta[name="viewport"]');
+    // 2. 屏幕适配逻辑 (针对你的 iPhone 14 Pro Max 优化)
+    (function() {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        const updateViewport = () => {
             if (window.innerWidth < 768) {
-                viewport.setAttribute('content', 'width=device-width, initial-scale=0.8, maximum-scale=5.0, minimum-scale=0.5');
+                viewport.setAttribute('content', 'width=device-width, initial-scale=0.8, maximum-scale=5.0, minimum-scale=0.5, viewport-fit=cover');
             } else {
-                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover');
             }
-        })();
+        };
+        updateViewport();
+        window.addEventListener('resize', updateViewport);
+    })();
+</script>
     </script>
 </head>
 <body>
