@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANT China Supplier - Intelligent Freight Calculation System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=5.0, minimum-scale=0.5">
+    <title>ANT China Supplier - 智能运费计算系统</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -259,8 +259,8 @@
         }
 
         .preview-item img {
-            width: 120%;
-            height: 120%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -373,21 +373,6 @@
             color: var(--primary);
         }
     </style>
-    <script>
-        // PWA 注册脚本
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-
-        (function() {
-            const viewport = document.querySelector('meta[name="viewport"]');
-            if (window.innerWidth < 768) {
-                viewport.setAttribute('content', 'width=device-width, initial-scale=0.8, maximum-scale=5.0, minimum-scale=0.5');
-            } else {
-                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
-            }
-        })();
-    </script>
 </head>
 <body>
     <div id="content-container" class="container mx-auto max-w-4xl">
@@ -398,8 +383,8 @@
                         <span>ANT China Supplier</span>
                     </div>
                     <div class="text-white/80">
-                        <div class="text-sm">Intelligent Freight Calculation System</div>
-                        <div class="font-mono text-xs mt-1">v2.1.6</div>
+                        <div class="text-sm">智能运费计算系统</div>
+                        <div class="font-mono text-xs mt-1">v2.1.7</div>
                     </div>
                 </div>
             </div>
@@ -409,25 +394,25 @@
                     <div class="card-header">
                         <h3 class="section-title">
                             <i class="fas fa-user"></i>
-                            Customer Information
+                            客户信息
                         </h3>
                         <button id="clear-all-btn" class="btn btn-clear">
                             <i class="fas fa-eraser"></i>
-                            Clear
+                            清空
                         </button>
                     </div>
                     <div class="card-body">
                         <div class="mb-5">
-                            <label for="customerName" class="label-text">Name</label>
-                            <input type="text" id="customerName" placeholder="Enter name" class="input-field">
+                            <label for="customerName" class="label-text">姓名</label>
+                            <input type="text" id="customerName" placeholder="输入客户姓名" class="input-field">
                         </div>
                         
                         <div class="mb-4">
-                            <label class="label-text">Order Date</label>
+                            <label class="label-text">下单日期</label>
                             <div id="order-dates-list" class="space-y-3 mb-3"></div>
                             <button id="add-date-btn" class="btn btn-secondary w-full">
                                 <i class="fas fa-plus"></i>
-                                Add Order Date
+                                添加日期
                             </button>
                         </div>
                     </div>
@@ -437,30 +422,30 @@
 
                 <button id="add-cargo-btn" class="btn btn-primary w-full mb-8">
                     <i class="fas fa-plus-circle"></i>
-                    Add Cargo
+                    添加货物
                 </button>
 
                 <div id="combined-details-and-results" class="card mb-6">
                     <div class="card-header">
                         <h3 class="section-title">
                             <i class="fas fa-cog"></i>
-                            Calculation Overview
+                            计算概览
                         </h3>
                     </div>
                     <div class="card-body">
                         <div class="mb-6">
-                            <h4 class="font-semibold text-primary mb-4">Rate Settings</h4>
+                            <h4 class="font-semibold text-primary mb-4">费率设置</h4>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <div>
-                                    <label for="kgRate" class="label-text">Weight Rate (¥/kg)</label>
+                                    <label for="kgRate" class="label-text">重量费率 (¥/kg)</label>
                                     <input type="number" id="kgRate" value="20" class="input-field">
                                 </div>
                                 <div>
-                                    <label for="cbmRate" class="label-text">Volume Rate (¥/m³)</label>
+                                    <label for="cbmRate" class="label-text">体积费率 (¥/m³)</label>
                                     <input type="number" id="cbmRate" value="1700" class="input-field">
                                 </div>
                                 <div>
-                                    <label for="exchangeRate" class="label-text">Exchange Rate (Ks/¥)</label>
+                                    <label for="exchangeRate" class="label-text">汇率 (Ks/¥)</label>
                                     <div class="relative">
                                         <input type="number" id="exchangeRate" value="630" class="input-field pl-10">
                                         <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">¥1 =</span>
@@ -470,35 +455,35 @@
                         </div>
 
                         <div id="cargo-details-table-container">
-                            <h4 class="font-semibold text-primary mb-4">Cargo Details</h4>
-                            <p class="text-center text-gray-500 py-6">Please add cargo to view details</p>
+                            <h4 class="font-semibold text-primary mb-4">货物详情</h4>
+                            <p class="text-center text-gray-500 py-6">请添加货物查看详情</p>
                         </div>
 
                         <div id="results">
-                            <h4 class="font-semibold text-primary mt-6 mb-4">Results</h4>
+                            <h4 class="font-semibold text-primary mt-6 mb-4">计算结果</h4>
                             <div class="results-grid">
                                 <div class="result-item">
-                                    <div class="label-text">Total Weight</div>
+                                    <div class="label-text">总重量</div>
                                     <div id="totalKg" class="font-semibold text-lg">0.00 kg</div>
                                 </div>
                                 <div class="result-item">
-                                    <div class="label-text">Total Volume</div>
-                                    <div id="totalVolume" class="font-semibold text-lg">0.00 m³</div>
+                                    <div class="label-text">总体积</div>
+                                    <div id="totalVolume" class="font-semibold text-lg">0.000 m³</div>
                                 </div>
                                 <div class="result-item">
-                                    <div class="label-text">Weight Freight</div>
+                                    <div class="label-text">重量运费</div>
                                     <div id="totalKgCost" class="font-semibold text-lg">0.00 ¥</div>
                                 </div>
                                 <div class="result-item">
-                                    <div class="label-text">Volume Freight</div>
+                                    <div class="label-text">体积运费</div>
                                     <div id="totalVolumeCost" class="font-semibold text-lg">0.00 ¥</div>
                                 </div>
                                 <div class="result-total">
-                                    <div class="label-text">Total Cost</div>
+                                    <div class="label-text">人民币总额</div>
                                     <div id="totalCostRMB" class="total-amount">0.00 ¥</div>
                                 </div>
                                 <div class="result-total">
-                                    <div class="label-text">Total Remittance Amount</div>
+                                    <div class="label-text">缅币总额 (汇款金额)</div>
                                     <div id="totalCostMMK" class="total-amount" style="color: #3a0ca3;">0 Ks</div>
                                 </div>
                             </div>
@@ -506,10 +491,10 @@
                     </div>
                 </div>
                 
-                <div class="flex justify-center md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-4">
+                <div class="flex justify-center mb-4">
                     <button id="export-pdf-btn" class="btn btn-danger w-full animate-pulse">
                         <i class="fas fa-share-nodes"></i>
-                        Export & Share PDF
+                        导出并分享 PDF 报告
                     </button>
                 </div>
             </div>
@@ -521,9 +506,9 @@
             <div class="modal-icon">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <p id="modal-message" class="text-xl font-semibold mb-4">Please fill in name and at least one order date!</p>
+            <p id="modal-message" class="text-xl font-semibold mb-4">请填写姓名和至少一个下单日期！</p>
             <button onclick="closeModal()" class="btn btn-primary w-full py-3">
-                OK
+                好的
             </button>
             <div class="progress-bar mt-6">
                 <div class="progress"></div>
@@ -538,6 +523,11 @@
     <script src="https://unpkg.com/jspdf-font-montserrat@1.0.0/dist/Montserrat-Regular.js"></script>
 
     <script>
+        // PWA 注册
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js?v=2');
+        }
+
         function initApp() {
             const cargoList = document.getElementById('cargo-list');
             const addCargoBtn = document.getElementById('add-cargo-btn');
@@ -566,7 +556,7 @@
                     cargos: []
                 };
 
-                document.querySelectorAll('.cargo-item').forEach((item, index) => {
+                document.querySelectorAll('.cargo-item').forEach((item) => {
                     const cargoId = item.id.split('-')[1];
                     const calcTypeInput = item.querySelector(`input[name="calc-type-${cargoId}"]:checked`);
                     const calcType = calcTypeInput ? calcTypeInput.value : 'weight'; 
@@ -574,10 +564,10 @@
                     const cargo = {
                         id: cargoId,
                         type: calcType,
-                        kg: item.querySelector('.kg-input').value,
-                        length: item.querySelector('.length-input').value,
-                        width: item.querySelector('.width-input').value,
-                        height: item.querySelector('.height-input').value,
+                        kg: item.querySelector('.kg-input')?.value || '',
+                        length: item.querySelector('.length-input')?.value || '',
+                        width: item.querySelector('.width-input')?.value || '',
+                        height: item.querySelector('.height-input')?.value || '',
                         images: cargoImages[cargoId] || []
                     };
                     data.cargos.push(cargo);
@@ -589,12 +579,17 @@
                 const savedData = localStorage.getItem('freightData');
                 if (savedData) {
                     const data = JSON.parse(savedData);
-                    customerNameInput.value = data.customerName;
-                    kgRateInput.value = data.kgRate;
-                    cbmRateInput.value = data.cbmRate;
-                    exchangeRateInput.value = data.exchangeRate;
-                    data.orderDates.forEach(date => addDateInput(date));
-                    data.cargos.forEach(cargo => addCargoItem(cargo));
+                    customerNameInput.value = data.customerName || '';
+                    kgRateInput.value = data.kgRate || '20';
+                    cbmRateInput.value = data.cbmRate || '1700';
+                    exchangeRateInput.value = data.exchangeRate || '630';
+                    if(data.orderDates && data.orderDates.length > 0) {
+                        data.orderDates.forEach(date => addDateInput(date));
+                    } else { addDateInput(); }
+                    
+                    if(data.cargos && data.cargos.length > 0) {
+                        data.cargos.forEach(cargo => addCargoItem(cargo));
+                    } else { addCargoItem(); }
                     recalculateAll();
                 } else {
                     addCargoItem();
@@ -618,23 +613,22 @@
                 const existingTable = document.getElementById('cargo-details-table');
                 if (existingTable) { existingTable.remove(); }
                 if (cargoData.length === 0) {
-                    cargoDetailsTableContainer.innerHTML = `<h4 class="font-semibold text-primary mb-4">Cargo Details</h4><p class="text-center text-gray-500 py-6">Please add cargo to view details</p>`;
+                    cargoDetailsTableContainer.innerHTML = `<h4 class="font-semibold text-primary mb-4">货物详情</h4><p class="text-center text-gray-500 py-6">请添加货物查看详情</p>`;
                     return;
                 }
                 const totalCostRMB = cargoData.reduce((sum, item) => sum + item.totalCost, 0).toFixed(2);
-                const displayData = cargoData.map(item => {
-                    if (item.type === 'weight') {
-                        return { serialNo: item.id, type: 'By Weight', weight: item.kg.toFixed(2), dimensions: '-', volume: '-', totalCost: item.totalCost.toFixed(2) };
-                    } else {
-                        const dimensionsInM = `${item.length.toFixed(3)}x${item.width.toFixed(3)}x${item.height.toFixed(3)}`;
-                        return { serialNo: item.id, type: 'By Volume', weight: '-', dimensions: dimensionsInM, volume: item.volume.toFixed(3), totalCost: item.totalCost.toFixed(2) };
-                    }
+                let tableHtml = `<h4 class="font-semibold text-primary mb-4">货物详情</h4><div class="overflow-x-auto" id="cargo-details-table"><table class="min-w-full text-sm"><thead><tr><th class="text-left p-3 bg-gray-50">编号</th><th class="text-left p-3 bg-gray-50">类型</th><th class="text-left p-3 bg-gray-50">重量(kg)</th><th class="text-left p-3 bg-gray-50">尺寸(m)</th><th class="text-left p-3 bg-gray-50">体积(m³)</th><th class="text-left p-3 bg-gray-50">运费(¥)</th></tr></thead><tbody>`;
+                
+                cargoData.forEach(item => {
+                    const weightDisp = item.type === 'weight' ? item.kg.toFixed(2) : '-';
+                    const dimDisp = item.type === 'volume' ? `${item.length.toFixed(3)}x${item.width.toFixed(3)}x${item.height.toFixed(3)}` : '-';
+                    const volDisp = item.type === 'volume' ? item.volume.toFixed(3) : '-';
+                    const typeDisp = item.type === 'weight' ? '按重' : '按体';
+                    
+                    tableHtml += `<tr class="hover:bg-gray-50 border-b"><td class="p-3">${item.id}</td><td class="p-3">${typeDisp}</td><td class="p-3">${weightDisp}</td><td class="p-3">${dimDisp}</td><td class="p-3">${volDisp}</td><td class="p-3 font-semibold text-blue-600">${item.totalCost.toFixed(2)}</td></tr>`;
                 });
-                let tableHtml = `<h4 class="font-semibold text-primary mb-4">Cargo Details</h4><div class="overflow-x-auto" id="cargo-details-table"><table class="min-w-full"><thead><tr><th class="text-left p-3 bg-gray-50">No.</th><th class="text-left p-3 bg-gray-50">Type</th><th class="text-left p-3 bg-gray-50">Weight (kg)</th><th class="text-left p-3 bg-gray-50">Dimensions (m)</th><th class="text-left p-3 bg-gray-50">Volume (m³)</th><th class="text-left p-3 bg-gray-50">Freight (¥)</th></tr></thead><tbody>`;
-                displayData.forEach(item => {
-                    tableHtml += `<tr class="hover:bg-gray-50"><td class="p-3 border-b">${item.serialNo}</td><td class="p-3 border-b">${item.type}</td><td class="p-3 border-b">${item.weight}</td><td class="p-3 border-b">${item.dimensions}</td><td class="p-3 border-b">${item.volume}</td><td class="p-3 border-b font-semibold text-blue-600">${item.totalCost}</td></tr>`;
-                });
-                tableHtml += `</tbody><tfoot><tr><td colspan="5" class="p-3 text-right font-semibold border-t">Total(¥)</td><td class="p-3 font-semibold text-blue-600 border-t">${totalCostRMB}</td></tr></tfoot></table></div>`;
+                
+                tableHtml += `</tbody><tfoot><tr><td colspan="5" class="p-3 text-right font-semibold">合计人民币</td><td class="p-3 font-semibold text-blue-600">${totalCostRMB} ¥</td></tr></tfoot></table></div>`;
                 cargoDetailsTableContainer.innerHTML = tableHtml;
             }
 
@@ -647,11 +641,13 @@
                 const kgRate = parseFloat(kgRateInput.value) || 0;
                 const cbmRate = parseFloat(cbmRateInput.value) || 0; 
                 const exchangeRate = parseFloat(exchangeRateInput.value) || 0;
-                document.querySelectorAll('.cargo-item').forEach((item, index) => {
+                
+                document.querySelectorAll('.cargo-item').forEach((item) => {
                     const cargoIdFromEl = item.id.split('-')[1];
                     const calcType = item.querySelector(`input[name="calc-type-${cargoIdFromEl}"]:checked`).value;
                     let singleCargoTotalCost = 0;
                     let kg = 0, length = 0, width = 0, height = 0, volumeInM3 = 0;
+                    
                     if (calcType === 'weight') {
                         kg = parseFloat(item.querySelector('.kg-input').value) || 0;
                         singleCargoTotalCost = kg * kgRate;
@@ -666,22 +662,27 @@
                         totalVolumeCost += singleCargoTotalCost;
                         totalVolumeM3 += volumeInM3;
                     }
+                    
                     cargoData.push({ id: cargoIdFromEl, type: calcType, kg, length, width, height, volume: volumeInM3, totalCost: singleCargoTotalCost });
+                    
                     const detailsDiv = item.querySelector('.calculation-details');
                     if (calcType === 'weight') {
-                         detailsDiv.innerHTML = `<p class="text-green-600 font-semibold"><i class="fas fa-truck mr-2"></i>Freight: ${singleCargoTotalCost.toFixed(2)} ¥</p>`;
+                         detailsDiv.innerHTML = `<p class="text-green-600 font-semibold"><i class="fas fa-truck mr-2"></i>运费: ${singleCargoTotalCost.toFixed(2)} ¥</p>`;
                     } else {
-                         detailsDiv.innerHTML = `<p><i class="fas fa-ruler-combined mr-2"></i>Volume: ${volumeInM3.toFixed(3)} m³</p><p class="text-green-600 font-semibold"><i class="fas fa-truck mr-2"></i>Freight: ${singleCargoTotalCost.toFixed(2)} ¥</p>`;
+                         detailsDiv.innerHTML = `<p><i class="fas fa-ruler-combined mr-2"></i>体积: ${volumeInM3.toFixed(3)} m³</p><p class="text-green-600 font-semibold"><i class="fas fa-truck mr-2"></i>运费: ${singleCargoTotalCost.toFixed(2)} ¥</p>`;
                     }
                 });
+                
                 const totalCostRMB = totalKgCost + totalVolumeCost;
                 const totalCostMMK = Math.round(totalCostRMB * exchangeRate);
+                
                 document.getElementById('totalKg').textContent = totalKg.toFixed(2) + ' kg';
                 document.getElementById('totalVolume').textContent = totalVolumeM3.toFixed(3) + ' m³';
                 document.getElementById('totalKgCost').textContent = totalKgCost.toFixed(2) + ' ¥';
                 document.getElementById('totalVolumeCost').textContent = totalVolumeCost.toFixed(2) + ' ¥';
                 document.getElementById('totalCostRMB').textContent = totalCostRMB.toFixed(2) + ' ¥';
                 document.getElementById('totalCostMMK').textContent = totalCostMMK.toLocaleString('en-US') + ' Ks';
+                
                 updateCargoDetailsTable();
                 saveData(); 
             }
@@ -712,43 +713,67 @@
                 const cargoItem = document.createElement('div');
                 cargoItem.className = 'cargo-item card p-5';
                 cargoItem.id = `cargo-${currentCargoId}`;
-                cargoItem.innerHTML = `<div class="cargo-header"><h4 class="font-semibold text-lg text-primary"><i class="fas fa-box mr-2"></i>Cargo #${currentCargoId}</h4><button onclick="removeCargo(${currentCargoId})" class="remove-btn"><i class="fas fa-times"></i></button></div><div class="radio-group"><label class="radio-item"><input type="radio" name="calc-type-${currentCargoId}" value="weight" ${data.type === 'weight' || !data.type ? 'checked' : ''}><span>by Weight</span></label><label class="radio-item"><input type="radio" name="calc-type-${currentCargoId}" value="volume" ${data.type === 'volume' ? 'checked' : ''}><span>by Volume</span></label></div><div class="space-y-4 calculation-inputs" id="weight-inputs-${currentCargoId}"><div><label class="label-text">Weight (kg)</label><input type="number" value="${data.kg || ''}" class="kg-input input-field" step="0.01"></div></div><div class="space-y-4 calculation-inputs hidden" id="volume-inputs-${currentCargoId}"><div><label class="label-text">Length (m)</label><input type="number" value="${data.length || ''}" class="length-input input-field" step="0.001"></div><div><label class="label-text">Width (m)</label><input type="number" value="${data.width || ''}" class="width-input input-field" step="0.001"></div><div><label class="label-text">Height (m)</label><input type="number" value="${data.height || ''}" class="height-input input-field" step="0.001"></div></div><div class="mt-5"><label class="label-text">Add Cargo Images</label><input type="file" class="image-upload input-field" accept="image/*" multiple><div id="image-preview-${currentCargoId}" class="image-preview"></div></div><div class="calculation-details mt-5"></div>`;
+                
+                cargoItem.innerHTML = `
+                    <div class="cargo-header">
+                        <h4 class="font-semibold text-lg text-primary"><i class="fas fa-box mr-2"></i>货物 #${currentCargoId}</h4>
+                        <button onclick="removeCargo(${currentCargoId})" class="remove-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="calc-type-${currentCargoId}" value="weight" ${data.type === 'weight' || !data.type ? 'checked' : ''}><span>按重量</span></label>
+                        <label class="radio-item"><input type="radio" name="calc-type-${currentCargoId}" value="volume" ${data.type === 'volume' ? 'checked' : ''}><span>按体积</span></label>
+                    </div>
+                    <div class="space-y-4 calculation-inputs" id="weight-inputs-${currentCargoId}">
+                        <div><label class="label-text">重量 (kg)</label><input type="number" value="${data.kg || ''}" class="kg-input input-field" step="0.01"></div>
+                    </div>
+                    <div class="space-y-4 calculation-inputs hidden" id="volume-inputs-${currentCargoId}">
+                        <div class="grid grid-cols-3 gap-2">
+                            <div><label class="label-text">长(m)</label><input type="number" value="${data.length || ''}" class="length-input input-field" step="0.001"></div>
+                            <div><label class="label-text">宽(m)</label><input type="number" value="${data.width || ''}" class="width-input input-field" step="0.001"></div>
+                            <div><label class="label-text">高(m)</label><input type="number" value="${data.height || ''}" class="height-input input-field" step="0.001"></div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <label class="label-text">实拍图片</label>
+                        <input type="file" class="image-upload input-field" accept="image/*" multiple>
+                        <div id="image-preview-${currentCargoId}" class="image-preview"></div>
+                    </div>
+                    <div class="calculation-details mt-5"></div>`;
+                
                 cargoList.appendChild(cargoItem);
+                
+                const weightInputs = document.getElementById(`weight-inputs-${currentCargoId}`);
+                const volumeInputs = document.getElementById(`volume-inputs-${currentCargoId}`);
+                
                 if (data.type === 'volume') {
-                    document.getElementById(`weight-inputs-${currentCargoId}`).classList.add('hidden');
-                    document.getElementById(`volume-inputs-${currentCargoId}`).classList.remove('hidden');
-                } else {
-                    document.getElementById(`weight-inputs-${currentCargoId}`).classList.remove('hidden');
-                    document.getElementById(`volume-inputs-${currentCargoId}`).classList.add('hidden');
+                    weightInputs.classList.add('hidden');
+                    volumeInputs.classList.remove('hidden');
                 }
-                const previewContainer = document.getElementById(`image-preview-${currentCargoId}`);
-                if (cargoImages[currentCargoId]) { cargoImages[currentCargoId].forEach(imgDataURL => { createImagePreviewElement(imgDataURL, previewContainer, currentCargoId); }); }
+
                 cargoItem.querySelectorAll(`input[name="calc-type-${currentCargoId}"]`).forEach(radio => {
-                    radio.addEventListener('change', (event) => {
-                        const showWeight = event.target.value === 'weight';
-                        document.getElementById(`weight-inputs-${currentCargoId}`).classList.toggle('hidden', !showWeight);
-                        document.getElementById(`volume-inputs-${currentCargoId}`).classList.toggle('hidden', showWeight);
+                    radio.addEventListener('change', (e) => {
+                        weightInputs.classList.toggle('hidden', e.target.value !== 'weight');
+                        volumeInputs.classList.toggle('hidden', e.target.value !== 'volume');
                         recalculateAll();
                     });
                 });
-                cargoItem.querySelectorAll('.kg-input, .length-input, .width-input, .height-input').forEach(input => input.addEventListener('input', recalculateAll));
-                cargoItem.querySelector('.image-upload').addEventListener('change', async (event) => {
-                    const files = event.target.files;
-                    for (const file of files) {
-                        const img = new Image();
-                        img.src = URL.createObjectURL(file);
-                        await new Promise(resolve => img.onload = resolve);
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        const imageDataURL = canvas.toDataURL('image/jpeg', 0.8);
-                        cargoImages[currentCargoId].push(imageDataURL);
-                        createImagePreviewElement(imageDataURL, previewContainer, currentCargoId);
+
+                cargoItem.querySelectorAll('input').forEach(input => input.addEventListener('input', recalculateAll));
+                
+                const previewContainer = document.getElementById(`image-preview-${currentCargoId}`);
+                cargoImages[currentCargoId].forEach(img => createImagePreviewElement(img, previewContainer, currentCargoId));
+
+                cargoItem.querySelector('.image-upload').addEventListener('change', async (e) => {
+                    for (const file of e.target.files) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            const imgData = event.target.result;
+                            cargoImages[currentCargoId].push(imgData);
+                            createImagePreviewElement(imgData, previewContainer, currentCargoId);
+                            saveData();
+                        };
+                        reader.readAsDataURL(file);
                     }
-                    event.target.value = '';
-                    saveData(); 
                 });
                 recalculateAll();
             }
@@ -756,40 +781,33 @@
             function createImagePreviewElement(imgDataURL, container, cargoId) {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'preview-item';
-                const previewImg = document.createElement('img');
-                previewImg.src = imgDataURL;
-                const deleteBtn = document.createElement('div');
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.innerHTML = '&times;';
-                deleteBtn.onclick = function() {
-                    const index = cargoImages[cargoId].indexOf(imgDataURL);
-                    if (index > -1) { cargoImages[cargoId].splice(index, 1); }
+                wrapper.innerHTML = `<img src="${imgDataURL}"><div class="delete-btn">&times;</div>`;
+                wrapper.querySelector('.delete-btn').onclick = () => {
+                    cargoImages[cargoId] = cargoImages[cargoId].filter(i => i !== imgDataURL);
                     wrapper.remove();
-                    saveData(); 
+                    saveData();
                 };
-                wrapper.appendChild(previewImg);
-                wrapper.appendChild(deleteBtn);
                 container.appendChild(wrapper);
             }
             
             window.removeCargo = (id) => {
-                const itemToRemove = document.getElementById(`cargo-${id}`);
-                itemToRemove?.remove();
+                document.getElementById(`cargo-${id}`)?.remove();
                 delete cargoImages[id];
                 recalculateAll();
             };
 
             function clearAllData() {
-                customerNameInput.value = '';
-                while (orderDatesList.firstChild) { orderDatesList.removeChild(orderDatesList.firstChild); }
-                dateCount = 0; 
-                while (cargoList.firstChild) { cargoList.removeChild(cargoList.firstChild); }
-                cargoCount = 0; 
-                Object.keys(cargoImages).forEach(key => delete cargoImages[key]); 
-                localStorage.removeItem('freightData');
-                addDateInput();
-                addCargoItem();
-                recalculateAll();
+                if(confirm('确定要清空所有数据吗？')){
+                    customerNameInput.value = '';
+                    orderDatesList.innerHTML = '';
+                    cargoList.innerHTML = '';
+                    cargoCount = 0; dateCount = 0;
+                    Object.keys(cargoImages).forEach(k => delete cargoImages[k]);
+                    localStorage.removeItem('freightData');
+                    addDateInput();
+                    addCargoItem();
+                    recalculateAll();
+                }
             }
 
             addCargoBtn.addEventListener('click', () => addCargoItem());
@@ -800,156 +818,85 @@
             customerNameInput.addEventListener('input', recalculateAll);
             
             exportPdfBtn.addEventListener('click', async () => {
-                const { jsPDF } = window.jspdf;
                 const customerName = customerNameInput.value.trim();
-                const orderDates = Array.from(document.querySelectorAll('.order-date-input')).map(input => input.value.trim()).filter(Boolean);
-                if (!customerName || orderDates.length === 0) { showModal('Please fill in name and at least one order date!'); return; }
+                const orderDates = Array.from(document.querySelectorAll('.order-date-input')).map(i => i.value).filter(Boolean);
+                if (!customerName || orderDates.length === 0) { showModal('请填写姓名和下单日期！'); return; }
                 
-                const dateCountMap = {};
-                const formattedOrderDates = orderDates.map(date => {
-                    const [year, month, day] = date.split('-');
-                    const shortDate = `${month}-${day}`;
-                    dateCountMap[shortDate] = (dateCountMap[shortDate] || 0) + 1;
-                    return dateCountMap[shortDate] > 1 ? `${shortDate} (${dateCountMap[shortDate]})` : shortDate;
-                });
-                const orderDatesString = formattedOrderDates.join(', ');
-                
+                const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('p', 'mm', 'a4');
                 const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
                 const fontName = 'SourceHanSans';
                 const margin = 15;
-                let yPosition = 30;
+                let y = 25;
 
-                function drawBorder(doc) {
-                    const cornerSize = 45;
-                    const red = '#000000'; const black = '#333333'; const mediumGray = '#e0e0e0';
-                    const offset = 8;
-                    doc.setFillColor(red); doc.triangle(0, 0, cornerSize, 0, 0, cornerSize, 'F');
-                    doc.setFillColor(black); doc.triangle(0, 0, cornerSize - offset, 0, 0, cornerSize - offset, 'F');
-                    doc.setFillColor(mediumGray); doc.triangle(offset, 0, cornerSize, 0, offset, cornerSize, 'F');
-                    doc.setFillColor(red); doc.triangle(pageWidth, 0, pageWidth - cornerSize, 0, pageWidth, cornerSize, 'F');
-                    doc.setFillColor(black); doc.triangle(pageWidth - cornerSize + offset, 0, pageWidth, 0, pageWidth, cornerSize - offset, 'F');
-                    doc.setFillColor(mediumGray); doc.triangle(pageWidth - cornerSize, 0, pageWidth - offset, 0, pageWidth - offset, cornerSize, 'F');
-                    doc.setFillColor(red); doc.triangle(0, pageHeight, cornerSize, pageHeight, 0, pageHeight - cornerSize, 'F');
-                    doc.setFillColor(black); doc.triangle(0, pageHeight - cornerSize + offset, 0, pageHeight, cornerSize - offset, pageHeight, 'F');
-                    doc.setFillColor(mediumGray); doc.triangle(0, pageHeight - cornerSize, cornerSize, pageHeight - cornerSize, 0, pageHeight - offset, 'F');
-                    doc.setFillColor(red); doc.triangle(pageWidth, pageHeight, pageWidth - cornerSize, pageHeight, pageWidth, pageHeight - cornerSize, 'F');
-                    doc.setFillColor(black); doc.triangle(pageWidth - cornerSize + offset, pageHeight, pageWidth, pageHeight, pageWidth, pageHeight - cornerSize + offset, 'F');
-                    doc.setFillColor(mediumGray); doc.triangle(pageWidth - cornerSize, pageHeight, pageWidth, pageHeight - offset, pageWidth - offset, pageHeight, 'F');
-                }
-
-                drawBorder(doc);
+                // 标题
                 doc.addFont('Montserrat-Regular.ttf', 'Montserrat', 'normal');
-                doc.setFont('Montserrat', 'normal');
-                doc.setFontSize(25);
-                doc.setFont(undefined, 'bold');
-                doc.text('INTERNATIONAL SHIPPING', pageWidth / 2, yPosition, { align: 'center' });
-                yPosition += 12;
+                doc.setFont('Montserrat', 'bold');
+                doc.setFontSize(22);
+                doc.text('FREIGHT INVOICE', pageWidth / 2, y, { align: 'center' });
+                
+                // 客户信息
+                y += 15;
                 doc.setFont(fontName, 'normal');
                 doc.setFontSize(12);
-                doc.text(`Name: ${customerName}`, margin, yPosition);
-                yPosition += 7;
-                const orderDateLabel = `Order Date: `;
-                const orderDateText = orderDatesString;
-                const availableWidth = pageWidth - 2 * margin;
-                const labelWidth = doc.getTextWidth(orderDateLabel);
-                const textLines = doc.splitTextToSize(orderDateText, availableWidth - labelWidth);
-                doc.text(orderDateLabel, margin, yPosition);
-                doc.text(textLines, margin + labelWidth, yPosition);
-                yPosition += doc.getTextDimensions(textLines).h + 5;
-
-                const kgRate = parseFloat(kgRateInput.value) || 0;
-                const cbmRate = parseFloat(cbmRateInput.value) || 0;
-                const tableHeaders = ["No.", "Type", `Weight(kg/${kgRate}¥)`, "Dimensions(m)", `Volume(m³/${cbmRate}¥)`, "Freight(¥)"];
-                const tableData = cargoData.map(item => {
-                    const cost = item.totalCost.toFixed(2);
-                    if (item.type === 'weight') { return [item.id, "By Weight", item.kg.toFixed(2), "-", "-", cost]; }
-                    else { const dimensionsInM = `${item.length.toFixed(3)}x${item.width.toFixed(3)}x${item.height.toFixed(3)}`; return [item.id, "By Volume", "-", dimensionsInM, item.volume.toFixed(3), cost]; }
-                });
+                doc.text(`客户姓名: ${customerName}`, margin, y);
+                y += 7;
+                doc.text(`下单日期: ${orderDates.join(', ')}`, margin, y);
                 
+                // 表格
+                const tableData = cargoData.map(item => [
+                    item.id,
+                    item.type === 'weight' ? '按重量' : '按体积',
+                    item.type === 'weight' ? item.kg.toFixed(2) : '-',
+                    item.type === 'volume' ? `${item.length}x${item.width}x${item.height}` : '-',
+                    item.type === 'volume' ? item.volume.toFixed(3) : '-',
+                    item.totalCost.toFixed(2)
+                ]);
+
                 doc.autoTable({
-                    startY: yPosition, head: [tableHeaders], body: tableData, theme: 'grid',
-                    styles: { fontSize: 12, cellPadding: 2, lineWidth: 0.1, font: fontName, halign: 'center' },
-                    headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold', fontSize: 14, halign: 'center' }
+                    startY: y + 5,
+                    head: [['编号', '类型', '重量(kg)', '尺寸(m)', '体积(m³)', '运费(¥)']],
+                    body: tableData,
+                    styles: { font: fontName, halign: 'center' },
+                    headStyles: { fillColor: [67, 97, 238] }
                 });
 
-                yPosition = doc.autoTable.previous.finalY + 15;
-
-                const totalWeight = cargoData.reduce((sum, item) => sum + (parseFloat(item.kg) || 0), 0).toFixed(2);
-                const totalVol = cargoData.reduce((sum, item) => sum + (parseFloat(item.volume) || 0), 0).toFixed(3);
-                doc.setFontSize(12);
-                doc.setFont(undefined, 'normal');
-                doc.text(`Total Weight: ${totalWeight} kg`, margin, yPosition);
-                doc.text(`Total Volume: ${totalVol} m³`, pageWidth - margin, yPosition, { align: 'right' });
-                yPosition += 8; 
-
-                const totalCostRMB = cargoData.reduce((sum, item) => sum + item.totalCost, 0).toFixed(2);
-                const exchangeRate = parseFloat(exchangeRateInput.value) || 0;
-                const totalCostMMK = Math.round(parseFloat(totalCostRMB) * exchangeRate).toLocaleString('en-US');
+                y = doc.lastAutoTable.finalY + 15;
+                
+                // 结果汇总
+                const totalRMB = cargoData.reduce((s, i) => s + i.totalCost, 0).toFixed(2);
+                const exRate = exchangeRateInput.value;
+                const totalMMK = Math.round(totalRMB * exRate).toLocaleString();
 
                 doc.setFontSize(14);
-                doc.setFont(undefined, 'bold');
-                doc.text("Total Freight (RMB):", margin, yPosition);
-                doc.text(`${totalCostRMB}¥`, pageWidth - margin, yPosition, { align: 'right' });
-                yPosition += 8;
-                doc.setFontSize(12);
-                doc.setFont(undefined, 'normal');
-                doc.text("Exchange Rate:", margin, yPosition);
-                doc.text(`1 ¥ = ${exchangeRateInput.value} Ks`, pageWidth - margin, yPosition, { align: 'right' });
-                yPosition += 8;
-                doc.setFontSize(14);
-                doc.setFont(undefined, 'bold');
-                doc.setTextColor(61, 149, 255);
-                doc.text("Total Remittance Amount (MMK):", margin, yPosition);
-                doc.text(`${totalCostMMK}Ks`, pageWidth - margin, yPosition, { align: 'right' });
-                doc.setTextColor(0, 0, 0);
+                doc.text(`人民币合计: ${totalRMB} ¥`, margin, y);
+                y += 8;
+                doc.text(`当前汇率: 1 ¥ = ${exRate} Ks`, margin, y);
+                y += 10;
+                doc.setFontSize(16);
+                doc.setTextColor(67, 97, 238);
+                doc.text(`应付缅币总额: ${totalMMK} Ks`, margin, y);
 
-                const cargoIdsWithImages = Object.keys(cargoImages).filter(id => cargoImages[id].length > 0);
-                if (cargoIdsWithImages.length > 0) {
-                    doc.addPage(); let currentY = margin; const imageableWidth = pageWidth - 2 * margin; const imagePadding = 15;
-                    doc.setFontSize(16); doc.setFont(fontName, 'bold');
-                    doc.text('Cargo Images', pageWidth / 2, currentY, { align: 'center' });
-                    currentY += 15;
-                    for (const cargoId of cargoIdsWithImages) {
-                        const images = cargoImages[cargoId];
-                        for (let i = 0; i < images.length; i++) {
-                            const imgData = images[i]; const img = new Image(); img.src = imgData;
-                            await new Promise(resolve => { img.onload = resolve; img.onerror = () => { resolve(); }; });
-                            if (img.naturalWidth === 0) continue;
-                            const aspectRatio = img.naturalHeight / img.naturalWidth; const imgHeight = imageableWidth * aspectRatio;
-                            if (currentY + imgHeight > pageHeight - margin) { doc.addPage(); currentY = margin; }
-                            doc.setFontSize(10); doc.setFont(fontName, 'normal');
-                            doc.text(`Cargo #${cargoId} Image`, margin, currentY - 4);
-                            doc.addImage(imgData, 'JPEG', margin, currentY, imageableWidth, imgHeight, undefined, 'SLOW');
-                            currentY += imgHeight + imagePadding;
-                        }
+                // 图片页
+                const cargoIds = Object.keys(cargoImages).filter(id => cargoImages[id].length > 0);
+                for (const id of cargoIds) {
+                    for (const imgData of cargoImages[id]) {
+                        doc.addPage();
+                        doc.setTextColor(0,0,0);
+                        doc.setFontSize(12);
+                        doc.text(`货物 #${id} 实拍图`, margin, 15);
+                        doc.addImage(imgData, 'JPEG', margin, 20, pageWidth - 30, 0);
                     }
                 }
 
-                // 文件名逻辑
-                const sanitizedName = customerName.replace(/[\/\\:*?"<>|]/g, '-');
-                const sanitizedDates = orderDates.join('_').replace(/[\/\\:*?"<>|]/g, '-');
-                const filename = `${sanitizedName}_${sanitizedDates}.pdf`;
-
-                // --- 核心：原生分享逻辑 ---
+                const filename = `${customerName}_运费单.pdf`;
                 const pdfBlob = doc.output('blob');
                 const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
 
                 if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-                    try {
-                        await navigator.share({
-                            files: [pdfFile],
-                            title: filename,
-                            text: `Freight Report for ${customerName}`
-                        });
-                    } catch (err) {
-                        if (err.name !== 'AbortError') {
-                            doc.save(filename); // 分享失败则回退到普通下载
-                        }
-                    }
+                    await navigator.share({ files: [pdfFile], title: filename });
                 } else {
-                    doc.save(filename); // 不支持分享的浏览器则普通下载
+                    doc.save(filename);
                 }
             });
             loadData();
