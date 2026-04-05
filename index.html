@@ -821,25 +821,26 @@
                 const margin = 15;
                 let yPosition = 30;
 
-                function drawBorder(doc) {
-                    const cornerSize = 45;
-                    const red = '#000000'; const black = '#333333'; const mediumGray = '#e0e0e0';
-                    const offset = 8;
-                    doc.setFillColor(red); doc.triangle(0, 0, cornerSize, 0, 0, cornerSize, 'F');
-                    doc.setFillColor(black); doc.triangle(0, 0, cornerSize - offset, 0, 0, cornerSize - offset, 'F');
-                    doc.setFillColor(mediumGray); doc.triangle(offset, 0, cornerSize, 0, offset, cornerSize, 'F');
-                    doc.setFillColor(red); doc.triangle(pageWidth, 0, pageWidth - cornerSize, 0, pageWidth, cornerSize, 'F');
-                    doc.setFillColor(black); doc.triangle(pageWidth - cornerSize + offset, 0, pageWidth, 0, pageWidth, cornerSize - offset, 'F');
-                    doc.setFillColor(mediumGray); doc.triangle(pageWidth - cornerSize, 0, pageWidth - offset, 0, pageWidth - offset, cornerSize, 'F');
-                    doc.setFillColor(red); doc.triangle(0, pageHeight, cornerSize, pageHeight, 0, pageHeight - cornerSize, 'F');
-                    doc.setFillColor(black); doc.triangle(0, pageHeight - cornerSize + offset, 0, pageHeight, cornerSize - offset, pageHeight, 'F');
-                    doc.setFillColor(mediumGray); doc.triangle(0, pageHeight - cornerSize, cornerSize, pageHeight - cornerSize, 0, pageHeight - offset, 'F');
-                    doc.setFillColor(red); doc.triangle(pageWidth, pageHeight, pageWidth - cornerSize, pageHeight, pageWidth, pageHeight - cornerSize, 'F');
-                    doc.setFillColor(black); doc.triangle(pageWidth - cornerSize + offset, pageHeight, pageWidth, pageHeight, pageWidth, pageHeight - cornerSize + offset, 'F');
-                    doc.setFillColor(mediumGray); doc.triangle(pageWidth - cornerSize, pageHeight, pageWidth, pageHeight - offset, pageWidth - offset, pageHeight, 'F');
+                // --- 修改点：绘制图片背景 ---
+                async function drawBackgroundImage(doc) {
+                    try {
+                        const img = new Image();
+                        img.src = 'bg.jpg'; // 指向你仓库中的图片
+                        await new Promise((resolve) => {
+                            img.onload = resolve;
+                            img.onerror = resolve; // 防止报错卡死
+                        });
+                        if (img.naturalWidth > 0) {
+                            // 背景覆盖全页
+                            doc.addImage(img, 'JPEG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
+                        }
+                    } catch (e) {
+                        console.error("Failed to load bg.jpg", e);
+                    }
                 }
 
-                drawBorder(doc);
+                await drawBackgroundImage(doc); // 执行背景绘制
+                
                 doc.addFont('Montserrat-Regular.ttf', 'Montserrat', 'normal');
                 doc.setFont('Montserrat', 'normal');
                 doc.setFontSize(25);
@@ -870,7 +871,7 @@
                 
                 doc.autoTable({
                     startY: yPosition, head: [tableHeaders], body: tableData, theme: 'grid',
-                    styles: { fontSize: 12, cellPadding: 2, lineWidth: 0.1, font: fontName, halign: 'center' },
+                    styles: { fontSize: 12, cellPadding: 2, lineWidth: 0.1, font: fontName, halign: 'center', fillColor: [255, 255, 255, 0.8] }, // 增加透明白底确保文字清晰
                     headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold', fontSize: 14, halign: 'center' }
                 });
 
@@ -907,7 +908,9 @@
 
                 const cargoIdsWithImages = Object.keys(cargoImages).filter(id => cargoImages[id].length > 0);
                 if (cargoIdsWithImages.length > 0) {
-                    doc.addPage(); let currentY = margin; const imageableWidth = pageWidth - 2 * margin; const imagePadding = 15;
+                    doc.addPage(); 
+                    await drawBackgroundImage(doc); // 新页面也画背景
+                    let currentY = margin; const imageableWidth = pageWidth - 2 * margin; const imagePadding = 15;
                     doc.setFontSize(16); doc.setFont(fontName, 'bold');
                     doc.text('Cargo Images', pageWidth / 2, currentY, { align: 'center' });
                     currentY += 15;
@@ -918,7 +921,11 @@
                             await new Promise(resolve => { img.onload = resolve; img.onerror = () => { resolve(); }; });
                             if (img.naturalWidth === 0) continue;
                             const aspectRatio = img.naturalHeight / img.naturalWidth; const imgHeight = imageableWidth * aspectRatio;
-                            if (currentY + imgHeight > pageHeight - margin) { doc.addPage(); currentY = margin; }
+                            if (currentY + imgHeight > pageHeight - margin) { 
+                                doc.addPage(); 
+                                await drawBackgroundImage(doc); // 新页面也画背景
+                                currentY = margin; 
+                            }
                             doc.setFontSize(10); doc.setFont(fontName, 'normal');
                             doc.text(`Cargo #${cargoId} Image`, margin, currentY - 4);
                             doc.addImage(imgData, 'JPEG', margin, currentY, imageableWidth, imgHeight, undefined, 'SLOW');
@@ -927,12 +934,10 @@
                     }
                 }
 
-                // 文件名逻辑
                 const sanitizedName = customerName.replace(/[\/\\:*?"<>|]/g, '-');
                 const sanitizedDates = orderDates.join('_').replace(/[\/\\:*?"<>|]/g, '-');
                 const filename = `${sanitizedName}_${sanitizedDates}.pdf`;
 
-                // --- 核心：原生分享逻辑 ---
                 const pdfBlob = doc.output('blob');
                 const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
 
@@ -945,11 +950,11 @@
                         });
                     } catch (err) {
                         if (err.name !== 'AbortError') {
-                            doc.save(filename); // 分享失败则回退到普通下载
+                            doc.save(filename);
                         }
                     }
                 } else {
-                    doc.save(filename); // 不支持分享的浏览器则普通下载
+                    doc.save(filename);
                 }
             });
             loadData();
