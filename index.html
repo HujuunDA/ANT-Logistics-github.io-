@@ -598,8 +598,6 @@
             window.closeModal = () => { document.getElementById('custom-modal').classList.add('hidden'); };
 
             function updateCargoDetailsTable() {
-                const existingTable = document.getElementById('cargo-details-table');
-                if (existingTable) { existingTable.remove(); }
                 if (cargoData.length === 0) {
                     cargoDetailsTableContainer.innerHTML = `<h4 class="font-semibold text-primary mb-4">Cargo Details</h4><p class="text-center text-gray-500 py-6">Please add cargo to view details</p>`;
                     return;
@@ -610,7 +608,7 @@
                 cargoData.forEach(item => {
                     const row = item.type === 'weight' ? 
                         `<tr><td class="p-3 border-b">${item.id}</td><td class="p-3 border-b">By Weight</td><td class="p-3 border-b">${item.kg.toFixed(2)}</td><td class="p-3 border-b">-</td><td class="p-3 border-b">-</td><td class="p-3 border-b font-semibold text-blue-600">${item.totalCost.toFixed(2)}</td></tr>` :
-                        `<tr><td class="p-3 border-b">${item.id}</td><td class="p-3 border-b">By Volume</td><td class="p-3 border-b">-</td><td class="p-3 border-b">${item.length.toFixed(3)}x${item.width.toFixed(3)}x${item.height.toFixed(3)}</td><td class="p-3 border-b">${item.volume.toFixed(3)}</td><td class="p-3 border-b font-semibold text-blue-600">${item.totalCost.toFixed(2)}</td></tr>`;
+                        `<tr><td class="p-3 border-b">${item.id}</td><td class="p-3 border-b">By Volume</td><td class="p-3 border-b">-</td><td class="p-3 border-b">${item.length}x${item.width}x${item.height}</td><td class="p-3 border-b">${item.volume.toFixed(3)}</td><td class="p-3 border-b font-semibold text-blue-600">${item.totalCost.toFixed(2)}</td></tr>`;
                     tableHtml += row;
                 });
 
@@ -628,20 +626,16 @@
                 document.querySelectorAll('.cargo-item').forEach((item) => {
                     const id = item.id.split('-')[1];
                     const type = item.querySelector(`input[name="calc-type-${id}"]:checked`).value;
-                    let kg = 0, length = 0, width = 0, height = 0, volume = 0, cost = 0;
+                    let kg = parseFloat(item.querySelector('.kg-input')?.value) || 0;
+                    let length = parseFloat(item.querySelector('.length-input')?.value) || 0;
+                    let width = parseFloat(item.querySelector('.width-input')?.value) || 0;
+                    let height = parseFloat(item.querySelector('.height-input')?.value) || 0;
+                    let volume = length * width * height;
+                    let cost = type === 'weight' ? kg * kgRate : volume * cbmRate;
 
-                    if (type === 'weight') {
-                        kg = parseFloat(item.querySelector('.kg-input').value) || 0;
-                        cost = kg * kgRate;
-                        totalKgCost += cost; totalKg += kg;
-                    } else {
-                        length = parseFloat(item.querySelector('.length-input').value) || 0;
-                        width = parseFloat(item.querySelector('.width-input').value) || 0;
-                        height = parseFloat(item.querySelector('.height-input').value) || 0;
-                        volume = length * width * height;
-                        cost = volume * cbmRate;
-                        totalVolumeCost += cost; totalVolumeM3 += volume;
-                    }
+                    if (type === 'weight') { totalKgCost += cost; totalKg += kg; }
+                    else { totalVolumeCost += cost; totalVolumeM3 += volume; }
+                    
                     cargoData.push({ id, type, kg, length, width, height, volume, totalCost: cost });
                     
                     const detailDiv = item.querySelector('.calculation-details');
@@ -719,7 +713,7 @@
                 });
                 cargoItem.querySelectorAll('input').forEach(input => input.oninput = recalculateAll);
                 
-                cargoItem.querySelector('.image-upload').onchange = async (e) => {
+                cargoItem.querySelector('.image-upload').onchange = (e) => {
                     for (const file of e.target.files) {
                         const reader = new FileReader();
                         reader.onload = (event) => {
@@ -744,10 +738,9 @@
             }
 
             window.removeCargo = (id) => { document.getElementById(`cargo-${id}`)?.remove(); delete cargoImages[id]; recalculateAll(); };
-            
             clearAllBtn.onclick = () => { localStorage.clear(); location.reload(); };
 
-            // --- 核心：PDF 导出逻辑（唯一修改点） ---
+            // --- 核心修改：增加超时保护的 PDF 导出逻辑 ---
             exportPdfBtn.onclick = async () => {
                 const { jsPDF } = window.jspdf;
                 const name = customerNameInput.value.trim();
@@ -758,19 +751,24 @@
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const pageHeight = doc.internal.pageSize.getHeight();
 
-                // 预加载背景图函数
-                const drawBG = async () => {
-                    try {
-                        const img = new Image(); img.src = 'bg.jpg';
-                        await new Promise((res) => { img.onload = res; img.onerror = res; });
-                        if (img.complete && img.naturalWidth > 0) {
-                            doc.addImage(img, 'JPEG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
-                        }
-                    } catch (e) {}
+                // 强制加载图片的函数，带 2 秒超时
+                const loadBG = () => {
+                    return new Promise((resolve) => {
+                        const img = new Image();
+                        img.src = 'bg.jpg?t=' + new Date().getTime(); // 增加时间戳防止缓存
+                        const timer = setTimeout(() => { resolve(null); }, 2000); // 2秒加载不出就跳过
+                        img.onload = () => { clearTimeout(timer); resolve(img); };
+                        img.onerror = () => { clearTimeout(timer); resolve(null); };
+                    });
                 };
 
-                await drawBG(); // 首页背景
+                const bgImg = await loadBG();
+                const drawBG = () => {
+                    if (bgImg) { doc.addImage(bgImg, 'JPEG', 0, 0, pageWidth, pageHeight, undefined, 'FAST'); }
+                };
 
+                // 第一页
+                drawBG();
                 doc.addFont('Montserrat-Regular.ttf', 'Montserrat', 'normal');
                 doc.setFont('Montserrat', 'normal').setFontSize(24).setTextColor(0,0,0);
                 doc.text('SHIPPING INVOICE', pageWidth / 2, 25, { align: 'center' });
@@ -782,10 +780,10 @@
                 const tableBody = cargoData.map(item => [
                     item.id, 
                     item.type === 'weight' ? 'Weight' : 'Volume',
-                    item.type === 'weight' ? item.kg.toFixed(2) : '-',
+                    item.type === 'weight' ? (item.kg || 0).toFixed(2) : '-',
                     item.type === 'volume' ? `${item.length}x${item.width}x${item.height}` : '-',
-                    item.type === 'volume' ? item.volume.toFixed(3) : '-',
-                    item.totalCost.toFixed(2)
+                    item.type === 'volume' ? (item.volume || 0).toFixed(3) : '-',
+                    (item.totalCost || 0).toFixed(2)
                 ]);
 
                 doc.autoTable({
@@ -793,19 +791,19 @@
                     head: [['No.', 'Type', 'Weight(kg)', 'Dimensions', 'Vol(m³)', 'Cost(¥)']],
                     body: tableBody,
                     theme: 'grid',
-                    styles: { font: 'SourceHanSansCN-Normal', fillColor: [255, 255, 255, 0.5] },
+                    styles: { font: 'SourceHanSansCN-Normal', fillColor: [255, 255, 255, 0.6] },
                     headStyles: { fillColor: [67, 97, 238] }
                 });
 
                 let finalY = doc.autoTable.previous.finalY + 10;
                 doc.text(`Total: ${document.getElementById('totalCostRMB').textContent} / ${document.getElementById('totalCostMMK').textContent}`, 15, finalY);
 
-                // 处理货物图片页
+                // 图片页
                 for (const id in cargoImages) {
                     if (cargoImages[id].length > 0) {
                         for (const imgData of cargoImages[id]) {
                             doc.addPage();
-                            await drawBG(); // 每一页都画背景
+                            drawBG();
                             doc.text(`Cargo #${id} Photo:`, 15, 20);
                             doc.addImage(imgData, 'JPEG', 15, 25, 180, 120);
                         }
@@ -817,10 +815,10 @@
                 const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
 
                 if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-                    navigator.share({ files: [pdfFile] });
-                } else {
-                    doc.save(filename);
-                }
+                    try {
+                        await navigator.share({ files: [pdfFile], title: filename });
+                    } catch (e) { doc.save(filename); }
+                } else { doc.save(filename); }
             };
 
             loadData();
