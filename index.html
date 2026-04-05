@@ -395,7 +395,7 @@
                     <div class="logo"><span>ANT China Supplier</span></div>
                     <div class="text-white/80">
                         <div class="text-sm">Intelligent Freight Calculation System</div>
-                        <div class="font-mono text-xs mt-1">v2.2.0</div>
+                        <div class="font-mono text-xs mt-1">v2.3.0</div>
                     </div>
                 </div>
             </div>
@@ -486,7 +486,7 @@
                     cbmRate: cbmRateInput.value,
                     exchangeRate: exchangeRateInput.value,
                     cargos: [],
-                    cargoImages: cargoImages  // 保存图片数据
+                    cargoImages: cargoImages
                 };
                 document.querySelectorAll('.cargo-item').forEach((item) => {
                     const cargoId = item.id.split('-')[1];
@@ -514,7 +514,6 @@
                     cbmRateInput.value = data.cbmRate;
                     exchangeRateInput.value = data.exchangeRate;
                     data.orderDates.forEach(date => addDateInput(date));
-                    // 先恢复图片数据
                     if (data.cargoImages) {
                         Object.keys(data.cargoImages).forEach(key => {
                             cargoImages[key] = data.cargoImages[key];
@@ -616,7 +615,7 @@
 
             function addCargoItem(data = {}) {
                 cargoCount++;
-                const currentCargoId = String(cargoCount);  // 使用字符串作为key
+                const currentCargoId = String(cargoCount);
                 if (!cargoImages[currentCargoId]) cargoImages[currentCargoId] = (data.images || []);
                 const cargoItem = document.createElement('div');
                 cargoItem.className = 'cargo-item card p-5';
@@ -709,14 +708,13 @@
             exchangeRateInput.addEventListener('input', recalculateAll);
             customerNameInput.addEventListener('input', recalculateAll);
             
-            // ========= 导出PDF - 完全保持原始逻辑，仅增加背景图片 =========
+            // ========= 修复版PDF导出：确保分页、汇率、总价完整显示 =========
             exportPdfBtn.addEventListener('click', async () => {
                 const { jsPDF } = window.jspdf;
                 const customerName = customerNameInput.value.trim();
                 const orderDates = Array.from(document.querySelectorAll('.order-date-input')).map(input => input.value.trim()).filter(Boolean);
                 if (!customerName || orderDates.length === 0) { showModal('Please fill in name and at least one order date!'); return; }
                 
-                // 预加载背景图片 (仅增加这一部分)
                 let bgImageData = null;
                 try {
                     const response = await fetch('bg.png');
@@ -728,7 +726,7 @@
                             reader.readAsDataURL(blob);
                         });
                     }
-                } catch (err) { console.warn("背景加载失败，继续生成无背景PDF", err); }
+                } catch (err) { console.warn("背景加载失败", err); }
                 
                 const doc = new jsPDF('p', 'mm', 'a4');
                 const pageWidth = doc.internal.pageSize.getWidth();
@@ -737,15 +735,12 @@
                 const margin = 15;
                 let yPosition = 30;
                 
-                // 添加背景图片的函数（每页调用）
                 const applyBackground = (docInstance, imgData) => { 
                     if (imgData) docInstance.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST'); 
                 };
-                
-                // 第一页背景
                 if (bgImageData) applyBackground(doc, bgImageData);
                 
-                // 以下完全保持原始代码的绘制逻辑
+                // 头部信息
                 doc.setFont('Montserrat', 'normal');
                 doc.setFontSize(25);
                 doc.setFont(undefined, 'bold');
@@ -755,16 +750,14 @@
                 doc.setFontSize(12);
                 doc.text(`Name: ${customerName}`, margin, yPosition);
                 yPosition += 7;
-                const orderDatesString = orderDates.map((date, idx) => {
-                    const [year, month, day] = date.split('-');
-                    const short = `${month}-${day}`;
-                    return short;
-                }).join(', ');
+                const orderDatesString = orderDates.map(date => date.split('-').slice(1,3).join('-')).join(', ');
                 doc.text(`Order Date: ${orderDatesString}`, margin, yPosition);
                 yPosition += 12;
                 
+                // 准备表格数据
                 const kgRate = parseFloat(kgRateInput.value) || 0;
                 const cbmRate = parseFloat(cbmRateInput.value) || 0;
+                const exchangeRate = parseFloat(exchangeRateInput.value) || 0;
                 const tableHeaders = ["No.", "Type", `Weight(kg/${kgRate}¥)`, "Dimensions(m)", `Volume(m³/${cbmRate}¥)`, "Freight(¥)"];
                 const tableData = cargoData.map(item => {
                     const cost = item.totalCost.toFixed(2);
@@ -772,45 +765,55 @@
                     else { const dimensionsInM = `${item.length.toFixed(3)}x${item.width.toFixed(3)}x${item.height.toFixed(3)}`; return [item.id, "By Volume", "-", dimensionsInM, item.volume.toFixed(3), cost]; }
                 });
                 
+                // 关键修复: 使用autoTable时保留足够的底部空间给后续汇总信息，并且自动分页
                 doc.autoTable({
                     startY: yPosition,
                     head: [tableHeaders],
                     body: tableData,
                     theme: 'grid',
-                    styles: { fontSize: 11, cellPadding: 2, lineWidth: 0.1, font: fontName, halign: 'center', textColor: [0,0,0] },
-                    headStyles: { fillColor: [230, 240, 255], textColor: [0,0,0], fontStyle: 'bold', fontSize: 12, halign: 'center' },
-                    alternateRowStyles: { fillColor: [248, 250, 252] }
+                    styles: { fontSize: 10, cellPadding: 2, lineWidth: 0.1, font: fontName, halign: 'center', textColor: [0,0,0] },
+                    headStyles: { fillColor: [230, 240, 255], textColor: [0,0,0], fontStyle: 'bold', fontSize: 11, halign: 'center' },
+                    alternateRowStyles: { fillColor: [248, 250, 252] },
+                    margin: { top: margin, bottom: 45, left: margin, right: margin }, // 底部留空45mm给汇总信息
+                    pageBreak: 'auto'
                 });
                 
-                yPosition = doc.autoTable.previous.finalY + 12;
+                // 获取表格结束后的Y坐标，并确保汇总信息不会被切到下一页(如果剩余空间不足则强制分页)
+                let finalY = doc.autoTable.previous.finalY;
+                const remainingSpace = pageHeight - finalY - 15;
+                // 汇总信息大约需要35mm高度，如果剩余不足则新开一页
+                if (remainingSpace < 35) {
+                    doc.addPage();
+                    if (bgImageData) applyBackground(doc, bgImageData);
+                    finalY = margin;
+                }
+                
+                // 计算总重量与总体积
                 const totalWeight = cargoData.reduce((sum, item) => sum + (parseFloat(item.kg) || 0), 0).toFixed(2);
                 const totalVol = cargoData.reduce((sum, item) => sum + (parseFloat(item.volume) || 0), 0).toFixed(3);
-                doc.setFontSize(12);
-                doc.setFont(undefined, 'normal');
-                doc.text(`Total Weight: ${totalWeight} kg`, margin, yPosition);
-                doc.text(`Total Volume: ${totalVol} m³`, pageWidth - margin, yPosition, { align: 'right' });
-                yPosition += 10;
-                const totalCostRMB = cargoData.reduce((sum, item) => sum + item.totalCost, 0).toFixed(2);
-                const exchangeRate = parseFloat(exchangeRateInput.value) || 0;
-                const totalCostMMK = Math.round(parseFloat(totalCostRMB) * exchangeRate).toLocaleString('en-US');
-                doc.setFontSize(14);
-                doc.setFont(undefined, 'bold');
-                doc.text("Total Freight (RMB):", margin, yPosition);
-                doc.text(`${totalCostRMB} ¥`, pageWidth - margin, yPosition, { align: 'right' });
-                yPosition += 8;
                 doc.setFontSize(11);
-                doc.setFont(undefined, 'normal');
-                doc.text("Exchange Rate:", margin, yPosition);
-                doc.text(`1 ¥ = ${exchangeRateInput.value} Ks`, pageWidth - margin, yPosition, { align: 'right' });
-                yPosition += 9;
-                doc.setFontSize(14);
+                doc.setFont(fontName, 'normal');
+                doc.text(`Total Weight: ${totalWeight} kg`, margin, finalY + 5);
+                doc.text(`Total Volume: ${totalVol} m³`, pageWidth - margin, finalY + 5, { align: 'right' });
+                
+                const totalCostRMB = cargoData.reduce((sum, item) => sum + item.totalCost, 0).toFixed(2);
+                const totalCostMMK = Math.round(parseFloat(totalCostRMB) * exchangeRate).toLocaleString('en-US');
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                doc.text("Total Freight (RMB):", margin, finalY + 15);
+                doc.text(`${totalCostRMB} ¥`, pageWidth - margin, finalY + 15, { align: 'right' });
+                doc.setFontSize(10);
+                doc.setFont(fontName, 'normal');
+                doc.text("Exchange Rate:", margin, finalY + 23);
+                doc.text(`1 ¥ = ${exchangeRate.toFixed(2)} Ks`, pageWidth - margin, finalY + 23, { align: 'right' });
+                doc.setFontSize(13);
                 doc.setFont(undefined, 'bold');
                 doc.setTextColor(61, 149, 255);
-                doc.text("Total Remittance Amount (MMK):", margin, yPosition);
-                doc.text(`${totalCostMMK} Ks`, pageWidth - margin, yPosition, { align: 'right' });
+                doc.text("Total Remittance Amount (MMK):", margin, finalY + 33);
+                doc.text(`${totalCostMMK} Ks`, pageWidth - margin, finalY + 33, { align: 'right' });
                 doc.setTextColor(0, 0, 0);
                 
-                // ========= 原始图片导出逻辑（完全恢复，全宽显示，多图正常） =========
+                // 图片导出：确保不覆盖汇总信息，并且分页正确
                 const cargoIdsWithImages = Object.keys(cargoImages).filter(id => cargoImages[id] && cargoImages[id].length > 0);
                 if (cargoIdsWithImages.length > 0) {
                     doc.addPage();
