@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>ANT China Supplier - Smart Freight Calculator</title>
     
     <link rel="manifest" href="manifest.json">
@@ -22,261 +22,359 @@
 
         body {
             font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', system-ui, 'Segoe UI', Roboto, sans-serif;
-            background: #f2f2f6;
-            padding: 20px 16px 40px;
+            background: #f0f4f8;
+            padding: 12px 12px 32px;
             min-height: 100vh;
         }
 
-        .ios-card {
-            background: rgba(255, 255, 255, 0.92);
-            border-radius: 34px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.02);
-            transition: all 0.25s ease;
-            overflow: hidden;
-            border: 0.5px solid rgba(224, 224, 230, 0.7);
+        .main-container {
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .ios-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 0.5px solid rgba(60, 60, 67, 0.08);
-            padding: 24px 24px 20px;
+        .compact-header {
+            background: #1a2a4f;
+            border-radius: 20px 20px 16px 16px;
+            padding: 10px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-
-        .logo-text {
-            font-weight: 590;
-            font-size: 24px;
+        .brand {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .brand-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: white;
             letter-spacing: -0.3px;
-            background: linear-gradient(135deg, #1c1c1e 0%, #3a3a3c 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        }
+        .brand-sub {
+            font-size: 10px;
+            color: rgba(255,255,255,0.6);
+            font-weight: 400;
+        }
+        .version {
+            font-size: 9px;
+            color: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.12);
+            padding: 3px 8px;
+            border-radius: 30px;
         }
 
-        .version-badge {
-            background: rgba(120, 120, 128, 0.12);
-            padding: 6px 12px;
-            border-radius: 40px;
+        .card {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+        }
+        
+        .card-header {
+            padding: 12px 14px 8px 14px;
+            border-bottom: 1px solid #eff3f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a2a4f;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-header h3 i {
+            font-size: 14px;
+            color: #3a6ea5;
+        }
+        
+        .card-body {
+            padding: 12px 14px;
+        }
+        
+        .form-row {
+            margin-bottom: 10px;
+        }
+        .form-row:last-child {
+            margin-bottom: 0;
+        }
+        .label {
             font-size: 12px;
             font-weight: 500;
-            color: #3a3a3c;
-            backdrop-filter: blur(10px);
+            color: #5a6e8a;
+            margin-bottom: 4px;
+            display: block;
         }
-
-        .card-inner {
-            padding: 20px 24px;
-        }
-
-        .section-title {
-            font-weight: 590;
-            font-size: 20px;
-            letter-spacing: -0.3px;
-            color: #1c1c1e;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .section-title i {
-            font-size: 22px;
-            color: #007aff;
-            background: rgba(0, 122, 255, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ios-input {
-            background: #ffffff;
-            border: 0.5px solid #e5e5ea;
-            border-radius: 14px;
-            padding: 14px 18px;
-            font-size: 17px;
-            font-weight: 400;
-            transition: all 0.2s ease;
+        input, .ios-input {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 14px;
             width: 100%;
             outline: none;
-            color: #000000;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            transition: all 0.15s;
         }
-        .ios-input:focus {
-            border-color: #007aff;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
-        }
-        .label-text {
-            font-size: 15px;
-            font-weight: 500;
-            color: #6c6c70;
-            margin-bottom: 8px;
-            display: block;
-            letter-spacing: -0.2px;
-        }
-
-        .btn-ios-primary {
-            background: #007aff;
-            border-radius: 14px;
-            padding: 14px 24px;
-            font-weight: 590;
-            font-size: 17px;
-            color: white;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
-        }
-        .btn-ios-primary:active { transform: scale(0.97); background: #0063cc; }
-        
-        .btn-ios-secondary {
-            background: #e9e9ef;
-            border-radius: 14px;
-            padding: 12px 20px;
-            font-weight: 500;
-            font-size: 16px;
-            color: #007aff;
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-        }
-        .btn-ios-secondary:active { background: #dfdfe6; }
-
-        .btn-ios-clear {
-            background: transparent;
-            border: 0.5px solid #c6c6c8;
-            border-radius: 30px;
-            padding: 8px 18px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #ff3b30;
-        }
-
-        .btn-ios-danger {
-            background: #ff3b30;
-            border-radius: 14px;
-            padding: 14px;
-            font-weight: 590;
-            color: white;
-            gap: 8px;
-            box-shadow: 0 2px 10px rgba(255, 59, 48, 0.25);
-        }
-
-        .cargo-ios-card {
+        input:focus {
+            border-color: #3a6ea5;
+            box-shadow: 0 0 0 3px rgba(58,110,165,0.1);
             background: white;
-            border-radius: 28px;
-            padding: 20px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            border: 0.5px solid rgba(0,0,0,0.04);
-            transition: all 0.2s;
         }
-
-        .remove-btn-ios {
-            background: rgba(60, 60, 67, 0.08);
-            width: 44px;
-            height: 44px;
-            border-radius: 30px;
+        
+        .date-item {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .date-item input {
+            flex: 1;
+        }
+        .remove-date-btn {
+            background: #f1f5f9;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #8e8e93;
-            font-size: 20px;
-            transition: all 0.2s;
+            color: #94a3b8;
             cursor: pointer;
         }
-        .remove-btn-ios:active { background: #e5e5ea; color: #ff3b30; transform: rotate(90deg); }
-
-        .radio-group-ios {
-            display: flex;
-            gap: 24px;
-            background: #f2f2f6;
-            padding: 8px 16px;
-            border-radius: 40px;
-            width: fit-content;
+        
+        .cargo-card {
+            background: #fafcff;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #eef2f8;
         }
-        .radio-item-ios {
+        .cargo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .cargo-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a2a4f;
+        }
+        .cargo-title i {
+            color: #3a6ea5;
+            margin-right: 6px;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 16px;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 30px;
+            width: fit-content;
+            margin-bottom: 10px;
+        }
+        .radio-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 16px;
+            gap: 6px;
+            font-size: 13px;
             font-weight: 500;
+            color: #334155;
         }
-        .radio-item-ios input[type="radio"] {
-            width: 20px;
-            height: 20px;
-            accent-color: #007aff;
+        .radio-item input {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            accent-color: #3a6ea5;
         }
-
-        .results-grid-ios {
+        
+        .dimension-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .dimension-row .form-row {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3a6ea5, #2c5a8c);
+            border: none;
+            border-radius: 14px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            color: white;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 10px;
+            font-weight: 500;
+            font-size: 13px;
+            color: #3a6ea5;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .btn-clear {
+            background: rgba(220,38,38,0.08);
+            border: 1px solid rgba(220,38,38,0.2);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #dc2626;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+        
+        .rate-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .rate-row .form-row {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .results-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
-        .result-card {
-            background: #f8f8fc;
-            border-radius: 24px;
-            padding: 16px;
+        .result-item {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 10px 8px;
             text-align: center;
-            border: 0.5px solid #e9e9ef;
         }
-        .result-total-card {
-            grid-column: span 2;
-            background: #eef5ff;
-            border-radius: 28px;
-            padding: 20px;
-            text-align: center;
-            border: 0.5px solid #d9e5ff;
+        .result-label {
+            font-size: 10px;
+            color: #5a6e8a;
         }
-        .total-amount-ios {
-            font-size: 32px;
+        .result-value {
             font-weight: 700;
-            color: #007aff;
-            letter-spacing: -0.5px;
+            font-size: 14px;
+            color: #1a2a4f;
         }
-
-        .cargo-table-wrapper {
-            background: #ffffff;
-            border-radius: 24px;
+        .result-total {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #eef5ff, #e0edfc);
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+        }
+        .total-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2c5a8c;
+        }
+        
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 4px 0;
+        }
+        .collapsible-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a2a4f;
+        }
+        .collapse-icon {
+            font-size: 11px;
+            color: #3a6ea5;
+            background: #f1f5f9;
+            width: 26px;
+            height: 26px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        .collapse-icon.collapsed {
+            transform: rotate(180deg);
+        }
+        .collapsible-content {
+            max-height: 300px;
             overflow: hidden;
-            border: 0.5px solid #e9e9ef;
+            transition: max-height 0.3s;
+        }
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+        .collapsed-preview {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin: 6px 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        .collapsed-preview.hidden {
+            display: none;
+        }
+        
+        .cargo-table-wrapper {
+            overflow-x: auto;
+            margin-top: 8px;
         }
         .cargo-table-wrapper table {
             width: 100%;
+            font-size: 11px;
             border-collapse: collapse;
-            font-size: 14px;
         }
         .cargo-table-wrapper th {
-            background: #f9f9fb;
-            padding: 14px 12px;
-            font-weight: 590;
-            color: #3a3a3c;
+            background: #f8fafc;
+            padding: 8px 6px;
+            font-weight: 600;
+            color: #334155;
         }
         .cargo-table-wrapper td {
-            padding: 12px;
-            border-bottom: 0.5px solid #efeff4;
+            padding: 8px 6px;
+            border-bottom: 1px solid #eff3f6;
         }
-
+        
         .image-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 12px;
-            align-items: flex-start;
+            gap: 8px;
+            margin-top: 8px;
         }
         .preview-block {
-            position: relative;
-            width: 90px;
-            height: 90px;
-            border-radius: 20px;
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            background: #f8f8fc;
-            border: 0.5px solid #e9e9ef;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            position: relative;
         }
         .preview-block img {
             width: 100%;
@@ -285,53 +383,39 @@
         }
         .delete-img-btn {
             position: absolute;
-            top: 4px;
-            right: 4px;
+            top: 2px;
+            right: 2px;
             background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            color: white;
-            border-radius: 30px;
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 10px;
+            color: white;
             cursor: pointer;
-            transition: 0.1s;
-            font-weight: bold;
         }
-        .delete-img-btn:active { transform: scale(0.9); background: #ff3b30; }
-        
         .camera-block {
-            width: 90px;
-            height: 90px;
-            border-radius: 20px;
-            background: rgba(0, 122, 255, 0.08);
-            border: 1.5px dashed #007aff;
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            background: rgba(58,110,165,0.08);
+            border: 1px dashed #3a6ea5;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
-            color: #007aff;
-            gap: 8px;
-            backdrop-filter: blur(4px);
+            gap: 4px;
         }
         .camera-block i {
-            font-size: 32px;
+            font-size: 22px;
+            color: #3a6ea5;
         }
         .camera-block span {
-            font-size: 11px;
-            font-weight: 500;
-        }
-        .camera-block:active {
-            background: #007aff20;
-            transform: scale(0.96);
-        }
-        .hidden-file-input {
-            display: none;
+            font-size: 9px;
+            color: #3a6ea5;
         }
         
         .modal-overlay {
@@ -341,47 +425,48 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(8px);
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .modal-card {
-            background: rgba(255,255,255,0.94);
-            backdrop-filter: blur(30px);
-            border-radius: 44px;
-            width: 300px;
-            padding: 28px;
+            background: white;
+            border-radius: 28px;
+            width: 260px;
+            padding: 24px;
             text-align: center;
-            box-shadow: 0 25px 40px rgba(0,0,0,0.2);
         }
         .hidden { display: none; }
         
-        /* telegram share loader */
-        .telegram-share-loader {
+        .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1c1c1e;
+            background: #1e293b;
             backdrop-filter: blur(20px);
-            padding: 12px 24px;
-            border-radius: 50px;
+            padding: 10px 20px;
+            border-radius: 40px;
             color: white;
-            font-weight: 500;
+            font-size: 13px;
             z-index: 2000;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            box-shadow: 0 8px 28px rgba(0,0,0,0.3);
-            font-size: 15px;
-            pointer-events: none;
             white-space: nowrap;
         }
-        .telegram-share-loader i {
-            font-size: 20px;
-        }
+        
+        .mt-2 { margin-top: 8px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mt-3 { margin-top: 12px; }
+        .mb-3 { margin-bottom: 12px; }
+        .w-full { width: 100%; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
     </style>
 
     <script>
@@ -391,74 +476,87 @@
     </script>
 </head>
 <body>
-<div id="content-container" class="max-w-4xl mx-auto">
-    <div class="ios-card mb-6">
-        <div class="ios-header">
-            <div class="flex justify-between items-center">
-                <div class="logo-text">ANT China Supplier</div>
-                <div class="version-badge">Smart Freight · v2.6.0</div>
-            </div>
-            <div class="text-sm text-gray-500 mt-1 tracking-tight">Intelligent Freight System | Camera Ready</div>
+<div class="main-container">
+    <!-- 紧凑头部 - 已修改为 ANT China Supplier -->
+    <div class="compact-header">
+        <div class="brand">
+            <span class="brand-name">ANT China Supplier</span>
+            <span class="brand-sub">Smart Calculator</span>
         </div>
+        <div class="version">v2.5</div>
+    </div>
 
-        <div class="card-inner">
-            <!-- Customer Info Card -->
-            <div class="ios-card mb-6">
-                <div class="flex justify-between items-center p-5 pb-0">
-                    <div class="section-title"><i class="fas fa-user-circle"></i>Customer Info</div>
-                    <button id="clear-all-btn" class="btn-ios-clear"><i class="fas fa-eraser mr-1"></i>Clear All</button>
-                </div>
-                <div class="p-5 pt-2">
-                    <div class="mb-5">
-                        <label class="label-text">Customer Name</label>
-                        <input type="text" id="customerName" placeholder="e.g., John Smith" class="ios-input">
-                    </div>
-                    <div class="mb-3">
-                        <label class="label-text">Order Date(s)</label>
-                        <div id="order-dates-list" class="space-y-3"></div>
-                        <button id="add-date-btn" class="btn-ios-secondary w-full mt-3 justify-center"><i class="fas fa-plus"></i>Add Date</button>
-                    </div>
-                </div>
+    <!-- Customer Info Card -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-user-circle"></i>Customer</h3>
+            <button id="clear-all-btn" class="btn-clear"><i class="fas fa-eraser"></i> Clear</button>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+                <label class="label">Name</label>
+                <input type="text" id="customerName" placeholder="Customer name">
             </div>
-
-            <!-- Dynamic Cargo List -->
-            <div id="cargo-list" class="space-y-5 mb-6"></div>
-            <button id="add-cargo-btn" class="btn-ios-primary mb-8"><i class="fas fa-plus-circle"></i>Add Cargo</button>
-
-            <!-- Rates & Results Card -->
-            <div class="ios-card mb-6">
-                <div class="p-5 pb-2 border-b border-[#efeff4]">
-                    <div class="section-title"><i class="fas fa-sliders-h"></i>Freight Rates</div>
-                </div>
-                <div class="p-5">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
-                        <div><label class="label-text">Weight Rate (¥/kg)</label><input type="number" id="kgRate" value="20" class="ios-input"></div>
-                        <div><label class="label-text">Volume Rate (¥/m³)</label><input type="number" id="cbmRate" value="1700" class="ios-input"></div>
-                        <div><label class="label-text">Exchange Rate (Ks/¥)</label><input type="number" id="exchangeRate" value="630" class="ios-input"></div>
-                    </div>
-                    <div id="cargo-details-table-container"><h4 class="font-semibold text-[#1c1c1e] mb-3 text-[17px]">Cargo Details</h4><p class="text-center text-gray-400 py-6 text-sm">No cargo added yet</p></div>
-                    <div id="results" class="mt-6">
-                        <h4 class="font-semibold text-[#1c1c1e] mb-4 text-[17px]">Freight Results</h4>
-                        <div class="results-grid-ios">
-                            <div class="result-card"><div class="text-xs text-gray-500">Total Weight</div><div id="totalKg" class="text-xl font-semibold">0.00 kg</div></div>
-                            <div class="result-card"><div class="text-xs text-gray-500">Total Volume</div><div id="totalVolume" class="text-xl font-semibold">0.00 m³</div></div>
-                            <div class="result-card"><div class="text-xs text-gray-500">Weight Freight</div><div id="totalKgCost" class="text-lg font-semibold text-[#007aff]">0.00 ¥</div></div>
-                            <div class="result-card"><div class="text-xs text-gray-500">Volume Freight</div><div id="totalVolumeCost" class="text-lg font-semibold text-[#007aff]">0.00 ¥</div></div>
-                            <div class="result-total-card"><div class="text-sm text-gray-500">Total Cost (RMB)</div><div id="totalCostRMB" class="total-amount-ios">0.00 ¥</div></div>
-                            <div class="result-total-card"><div class="text-sm text-gray-500">Total Payable (MMK)</div><div id="totalCostMMK" class="total-amount-ios" style="color:#3a0ca3;">0 Ks</div></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex justify-center mb-4">
-                <button id="export-pdf-btn" class="btn-ios-primary btn-ios-danger w-full max-w-md" style="background:#ff3b30;"><i class="fas fa-share-nodes"></i>Export & Share PDF</button>
+            <div class="form-row">
+                <label class="label">Order Date(s)</label>
+                <div id="order-dates-list"></div>
+                <button id="add-date-btn" class="btn-secondary mt-2"><i class="fas fa-plus"></i> Add Date</button>
             </div>
         </div>
     </div>
+
+    <!-- Cargo List -->
+    <div id="cargo-list"></div>
+    <button id="add-cargo-btn" class="btn-primary mb-2"><i class="fas fa-plus-circle"></i> Add Cargo</button>
+
+    <!-- Rates & Results -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-sliders-h"></i>Rates</h3>
+        </div>
+        <div class="card-body">
+            <div class="rate-row">
+                <div class="form-row"><label class="label">¥/kg</label><input type="number" id="kgRate" value="20" step="1"></div>
+                <div class="form-row"><label class="label">¥/m³</label><input type="number" id="cbmRate" value="1700" step="10"></div>
+                <div class="form-row"><label class="label">Ks/¥</label><input type="number" id="exchangeRate" value="630" step="5"></div>
+            </div>
+            
+            <div id="cargo-details-container">
+                <div class="collapsible-header" id="cargoDetailsHeader">
+                    <h4><i class="fas fa-list-ul"></i> Cargo Details</h4>
+                    <div class="collapse-icon" id="collapseIcon"><i class="fas fa-chevron-up"></i></div>
+                </div>
+                <div id="collapsedPreview" class="collapsed-preview hidden">
+                    <span>Total Freight</span>
+                    <span class="preview-total" id="previewTotalRMB">0.00 ¥</span>
+                </div>
+                <div id="cargoDetailsContent" class="collapsible-content">
+                    <div id="cargo-details-table-container"></div>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <div class="results-grid" id="results">
+                    <div class="result-item"><div class="result-label">Weight</div><div class="result-value" id="totalKg">0 kg</div></div>
+                    <div class="result-item"><div class="result-label">Volume</div><div class="result-value" id="totalVolume">0 m³</div></div>
+                    <div class="result-item"><div class="result-label">Weight ¥</div><div class="result-value" id="totalKgCost">0 ¥</div></div>
+                    <div class="result-item"><div class="result-label">Volume ¥</div><div class="result-value" id="totalVolumeCost">0 ¥</div></div>
+                    <div class="result-total"><div class="result-label">Total (RMB)</div><div class="total-value" id="totalCostRMB">0 ¥</div></div>
+                    <div class="result-total"><div class="result-label">Total (MMK)</div><div class="total-value" id="totalCostMMK">0 Ks</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button id="export-pdf-btn" class="btn-primary btn-danger"><i class="fas fa-share-nodes"></i> Export & Share PDF</button>
 </div>
 
 <div id="custom-modal" class="modal-overlay hidden">
-    <div class="modal-card"><div class="text-5xl text-[#007aff] mb-3"><i class="fas fa-exclamation-circle"></i></div><p id="modal-message" class="text-lg font-medium mb-5">Please enter customer name and at least one order date!</p><button onclick="closeModal()" class="btn-ios-primary py-2 px-6 w-auto inline-block">OK</button></div>
+    <div class="modal-card">
+        <i class="fas fa-exclamation-circle" style="font-size: 40px; color: #3a6ea5; margin-bottom: 12px;"></i>
+        <p id="modal-message" style="margin-bottom: 20px;">Please enter customer name and order date!</p>
+        <button onclick="closeModal()" class="btn-primary" style="padding: 8px;">OK</button>
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -479,14 +577,33 @@
         const kgRateInput = document.getElementById('kgRate');
         const cbmRateInput = document.getElementById('cbmRate');
         const exchangeRateInput = document.getElementById('exchangeRate');
-        const cargoDetailsContainer = document.getElementById('cargo-details-table-container');
+        const cargoDetailsTableContainer = document.getElementById('cargo-details-table-container');
+        
+        const cargoDetailsHeader = document.getElementById('cargoDetailsHeader');
+        const cargoDetailsContent = document.getElementById('cargoDetailsContent');
+        const collapseIcon = document.getElementById('collapseIcon');
+        const collapsedPreview = document.getElementById('collapsedPreview');
+        let isCollapsed = false;
+        
+        function toggleCollapse() {
+            isCollapsed = !isCollapsed;
+            if (isCollapsed) {
+                cargoDetailsContent.classList.add('collapsed');
+                collapseIcon.classList.add('collapsed');
+                collapsedPreview.classList.remove('hidden');
+            } else {
+                cargoDetailsContent.classList.remove('collapsed');
+                collapseIcon.classList.remove('collapsed');
+                collapsedPreview.classList.add('hidden');
+            }
+        }
+        cargoDetailsHeader.addEventListener('click', toggleCollapse);
 
         let cargoCounter = 0;
         let dateCounter = 0;
         const cargoData = [];
         const cargoImages = {};
 
-        // IndexedDB
         const DB_NAME = 'FreightDB';
         const DB_VERSION = 1;
         const STORE_NAME = 'freightData';
@@ -515,7 +632,8 @@
                     cbmRate: cbmRateInput.value,
                     exchangeRate: exchangeRateInput.value,
                     cargos: [],
-                    cargoImages: cargoImages
+                    cargoImages: cargoImages,
+                    isDetailsCollapsed: isCollapsed
                 };
                 document.querySelectorAll('.cargo-item').forEach(item => {
                     const cargoId = item.id.split('-')[1];
@@ -550,6 +668,10 @@
                     if (data.cargoImages) Object.assign(cargoImages, data.cargoImages);
                     if (data.cargos && data.cargos.length) data.cargos.forEach(c => addCargoItem(c));
                     else addCargoItem();
+                    if (data.isDetailsCollapsed !== undefined && data.isDetailsCollapsed) {
+                        isCollapsed = false;
+                        toggleCollapse();
+                    }
                 } else { addCargoItem(); addDateInput(); }
                 recalculateAll();
             } catch(e) { addCargoItem(); addDateInput(); recalculateAll(); }
@@ -576,27 +698,32 @@
             const modal = document.getElementById('custom-modal');
             document.getElementById('modal-message').innerText = msg;
             modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.add('hidden'), 2500);
+            setTimeout(() => modal.classList.add('hidden'), 2000);
         }
         window.closeModal = () => document.getElementById('custom-modal').classList.add('hidden');
 
         function updateCargoDetailsTable() {
+            const previewTotalSpan = document.getElementById('previewTotalRMB');
             if (cargoData.length === 0) {
-                cargoDetailsContainer.innerHTML = `<h4 class="font-semibold text-[#1c1c1e] mb-3">Cargo Details</h4><p class="text-center text-gray-400 py-6 text-sm">No cargo added yet</p>`;
+                cargoDetailsTableContainer.innerHTML = `<p class="text-center text-gray-400 py-4 text-xs">No cargo added</p>`;
+                if (previewTotalSpan) previewTotalSpan.innerText = '0.00 ¥';
                 return;
             }
             const totalCostRMB = cargoData.reduce((sum, i) => sum + i.totalCost, 0).toFixed(2);
-            let html = `<h4 class="font-semibold text-[#1c1c1e] mb-3">Cargo Details</h4><div class="cargo-table-wrapper"><table><thead><tr><th>#</th><th>Billing Type</th><th>Weight(kg)</th><th>Dimensions(m)</th><th>Volume(m³)</th><th>Freight(¥)</th></tr></thead><tbody>`;
+            if (previewTotalSpan) previewTotalSpan.innerText = totalCostRMB + ' ¥';
+            
+            let html = `<div class="cargo-table-wrapper"><table><thead><tr><th>#</th><th>Type</th><th>Weight</th><th>Dimensions</th><th>Vol</th><th>¥</th></tr></thead><tbody>`;
             cargoData.forEach(item => {
                 if (item.type === 'weight') {
-                    html += `<tr><td class="text-black">${item.id}</td><td class="text-black">By Weight</td><td class="text-black">${item.kg.toFixed(2)}</td><td class="text-black">-</td><td class="text-black">-</td><td class="font-semibold text-[#007aff]">${item.totalCost.toFixed(2)}</td></tr>`;
+                    html += `<tr><td class="font-medium">${item.id}</td><td>W</td><td>${item.kg.toFixed(2)}</td><td>-</td><td>-</td><td class="font-semibold">${item.totalCost.toFixed(2)}</td></tr>`;
                 } else {
-                    const dim = `${item.length.toFixed(3)}x${item.width.toFixed(3)}x${item.height.toFixed(3)}`;
-                    html += `<tr><td class="text-black">${item.id}</td><td class="text-black">By Volume</td><td class="text-black">-</td><td class="text-black">${dim}</td><td class="text-black">${item.volume.toFixed(3)}</td><td class="font-semibold text-[#007aff]">${item.totalCost.toFixed(2)}</td></tr>`;
+                    const dim = `${item.length.toFixed(2)}x${item.width.toFixed(2)}x${item.height.toFixed(2)}`;
+                    html += `<tr><td class="font-medium">${item.id}</td><td>V</td><td>-</td><td>${dim}</td><td>${item.volume.toFixed(3)}</td><td class="font-semibold">${item.totalCost.toFixed(2)}</td></tr>`;
                 }
             });
-            html += `</tbody><tfoot><tr><td colspan="5" class="text-right font-medium text-black">Total (¥)</td><td class="font-bold text-[#007aff]">${totalCostRMB}</td></tr></tfoot></table></div>`;
-            cargoDetailsContainer.innerHTML = html;
+            html += `<tr class="border-t"><td colspan="5" class="text-right font-medium">Total</td><td class="font-bold">${totalCostRMB}</td></tr>`;
+            html += `</tbody></table></div>`;
+            cargoDetailsTableContainer.innerHTML = html;
         }
 
         function recalculateAll() {
@@ -625,16 +752,16 @@
                 }
                 cargoData.push({ id: cargoId, type: calcType, kg, length: len, width: wid, height: hei, volume: vol, totalCost: singleCost });
                 const detailsDiv = item.querySelector('.calculation-details');
-                if (calcType === 'weight') detailsDiv.innerHTML = `<div class="mt-3 text-[#007aff] font-medium"><i class="fas fa-truck mr-2"></i>Freight: ${singleCost.toFixed(2)} ¥</div>`;
-                else detailsDiv.innerHTML = `<div class="mt-3 text-[#007aff]"><i class="fas fa-ruler-combined mr-2"></i>Volume: ${vol.toFixed(3)} m³</div><div class="font-medium">Freight: ${singleCost.toFixed(2)} ¥</div>`;
+                if (calcType === 'weight') detailsDiv.innerHTML = `<div class="mt-2 text-[#3a6ea5] text-xs font-medium">Freight: ${singleCost.toFixed(2)} ¥</div>`;
+                else detailsDiv.innerHTML = `<div class="mt-2 text-[#3a6ea5] text-xs">Volume: ${vol.toFixed(3)} m³<br>Freight: ${singleCost.toFixed(2)} ¥</div>`;
             });
             const totalRMB = totalKgCost + totalVolumeCost;
             const totalMMK = Math.round(totalRMB * exchangeRate);
-            document.getElementById('totalKg').innerText = totalKg.toFixed(2) + ' kg';
+            document.getElementById('totalKg').innerText = totalKg.toFixed(1) + ' kg';
             document.getElementById('totalVolume').innerText = totalVolume.toFixed(3) + ' m³';
-            document.getElementById('totalKgCost').innerText = totalKgCost.toFixed(2) + ' ¥';
-            document.getElementById('totalVolumeCost').innerText = totalVolumeCost.toFixed(2) + ' ¥';
-            document.getElementById('totalCostRMB').innerText = totalRMB.toFixed(2) + ' ¥';
+            document.getElementById('totalKgCost').innerText = totalKgCost.toFixed(0) + ' ¥';
+            document.getElementById('totalVolumeCost').innerText = totalVolumeCost.toFixed(0) + ' ¥';
+            document.getElementById('totalCostRMB').innerText = totalRMB.toFixed(0) + ' ¥';
             document.getElementById('totalCostMMK').innerText = totalMMK.toLocaleString('en-US') + ' Ks';
             updateCargoDetailsTable();
             saveData();
@@ -643,9 +770,9 @@
         function addDateInput(value = '') {
             dateCounter++;
             const div = document.createElement('div');
-            div.className = 'flex items-center gap-3';
+            div.className = 'date-item';
             div.id = `order-date-${dateCounter}`;
-            div.innerHTML = `<input type="date" value="${value}" class="order-date-input ios-input flex-1"><button onclick="removeDateInput(${dateCounter})" class="remove-btn-ios"><i class="fas fa-times"></i></button>`;
+            div.innerHTML = `<input type="date" value="${value}" class="order-date-input"><div onclick="removeDateInput(${dateCounter})" class="remove-date-btn"><i class="fas fa-times"></i></div>`;
             orderDatesList.appendChild(div);
             div.querySelector('.order-date-input').addEventListener('input', recalculateAll);
             recalculateAll();
@@ -676,11 +803,12 @@
             });
             const cameraDiv = document.createElement('div');
             cameraDiv.className = 'camera-block';
-            cameraDiv.innerHTML = '<i class="fas fa-camera"></i><span>Add Photo</span>';
+            cameraDiv.innerHTML = '<i class="fas fa-camera"></i><span>Add</span>';
             const hiddenInput = document.createElement('input');
             hiddenInput.type = 'file';
             hiddenInput.accept = 'image/*';
             hiddenInput.classList.add('hidden-file-input');
+            hiddenInput.style.display = 'none';
             hiddenInput.onchange = async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
@@ -705,15 +833,27 @@
             const cid = String(cargoCounter);
             if (!cargoImages[cid]) cargoImages[cid] = (data.images ? [...data.images] : []);
             const cargoDiv = document.createElement('div');
-            cargoDiv.className = 'cargo-item cargo-ios-card';
+            cargoDiv.className = 'cargo-item cargo-card';
             cargoDiv.id = `cargo-${cid}`;
             cargoDiv.innerHTML = `
-                <div class="flex justify-between items-center mb-4"><h4 class="font-semibold text-[17px]"><i class="fas fa-box mr-2 text-[#007aff]"></i>Cargo #${cid}</h4><div class="remove-btn-ios" onclick="removeCargo(${cid})"><i class="fas fa-times"></i></div></div>
-                <div class="radio-group-ios mb-4"><label class="radio-item-ios"><input type="radio" name="calc-type-${cid}" value="weight" ${data.type === 'weight' || !data.type ? 'checked' : ''}> <span>By Weight</span></label><label class="radio-item-ios"><input type="radio" name="calc-type-${cid}" value="volume" ${data.type === 'volume' ? 'checked' : ''}> <span>By Volume</span></label></div>
-                <div id="weight-inputs-${cid}"><label class="label-text">Weight (kg)</label><input type="number" value="${data.kg || ''}" class="kg-input ios-input" step="0.01"></div>
-                <div id="volume-inputs-${cid}" class="hidden space-y-4"><div><label class="label-text">Length (m)</label><input type="number" value="${data.length || ''}" class="length-input ios-input" step="0.001"></div><div><label class="label-text">Width (m)</label><input type="number" value="${data.width || ''}" class="width-input ios-input" step="0.001"></div><div><label class="label-text">Height (m)</label><input type="number" value="${data.height || ''}" class="height-input ios-input" step="0.001"></div></div>
-                <div class="mt-4"><label class="label-text">Cargo Images (tap to add from gallery)</label><div id="image-grid-${cid}" class="image-grid"></div></div>
-                <div class="calculation-details mt-3"></div>
+                <div class="cargo-header">
+                    <span class="cargo-title"><i class="fas fa-box"></i>Cargo #${cid}</span>
+                    <div class="remove-date-btn" onclick="removeCargo(${cid})"><i class="fas fa-trash-alt"></i></div>
+                </div>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="calc-type-${cid}" value="weight" ${data.type === 'weight' || !data.type ? 'checked' : ''}> Weight</label>
+                    <label class="radio-item"><input type="radio" name="calc-type-${cid}" value="volume" ${data.type === 'volume' ? 'checked' : ''}> Volume</label>
+                </div>
+                <div id="weight-inputs-${cid}"><input type="number" value="${data.kg || ''}" class="kg-input w-full" placeholder="Weight (kg)" step="0.01"></div>
+                <div id="volume-inputs-${cid}" class="hidden">
+                    <div class="dimension-row">
+                        <div><input type="number" value="${data.length || ''}" class="length-input" placeholder="L (m)" step="0.001"></div>
+                        <div><input type="number" value="${data.width || ''}" class="width-input" placeholder="W (m)" step="0.001"></div>
+                        <div><input type="number" value="${data.height || ''}" class="height-input" placeholder="H (m)" step="0.001"></div>
+                    </div>
+                </div>
+                <div class="mt-2"><div id="image-grid-${cid}" class="image-grid"></div></div>
+                <div class="calculation-details"></div>
             `;
             cargoListDiv.appendChild(cargoDiv);
             const weightDiv = document.getElementById(`weight-inputs-${cid}`);
@@ -749,19 +889,17 @@
         exchangeRateInput.addEventListener('input', recalculateAll);
         customerNameInput.addEventListener('input', recalculateAll);
         
-        // Helper: show/hide loading toast
         let loadingToast = null;
-        function showLoadingToast(message) {
+        function showLoadingToast(msg) {
             if(loadingToast) loadingToast.remove();
             const div = document.createElement('div');
-            div.className = 'telegram-share-loader';
-            div.innerHTML = `<i class="fab fa-telegram-plane"></i> ${message}`;
+            div.className = 'toast';
+            div.innerHTML = `<i class="fab fa-telegram-plane"></i> ${msg}`;
             document.body.appendChild(div);
             loadingToast = div;
         }
         function hideLoadingToast() { if(loadingToast){ loadingToast.remove(); loadingToast = null; } }
 
-        // 生成PDF Blob，文件名和分享文本均基于客户名称+订单日期
         async function generatePdfBlob() {
             const { jsPDF } = window.jspdf;
             const customerName = customerNameInput.value.trim();
@@ -782,57 +920,47 @@
             const applyBg = (d, img) => { if(img) d.addImage(img, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST'); };
             if(bgImageData) applyBg(doc, bgImageData);
             doc.setFont('Montserrat', 'normal');
-            doc.setFontSize(25); doc.setFont(undefined, 'bold');
-            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(22); doc.setFont(undefined, 'bold');
             doc.text('INTERNATIONAL SHIPPING', pageWidth/2, yPos, {align:'center'});
-            yPos+=12;
-            doc.setFont('SourceHanSans', 'normal'); doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            doc.text(`Name: ${customerName}`, margin, yPos); yPos+=7;
+            yPos+=10;
+            doc.setFont('SourceHanSans', 'normal'); doc.setFontSize(11);
+            doc.text(`Name: ${customerName}`, margin, yPos); yPos+=6;
             const dateStr = orderDates.map(d=>d.split('-').slice(1,3).join('-')).join(', ');
-            doc.text(`Order Date: ${dateStr}`, margin, yPos); yPos+=12;
+            doc.text(`Order Date: ${dateStr}`, margin, yPos); yPos+=10;
             const kgRate = parseFloat(kgRateInput.value)||0, cbmRate = parseFloat(cbmRateInput.value)||0, exRate = parseFloat(exchangeRateInput.value)||0;
             const headers = ["No.", "Type", `Weight(kg/${kgRate}¥)`, "Dimensions(m)", `Volume(m³/${cbmRate}¥)`, "Freight(¥)"];
             const body = cargoData.map(i => i.type==='weight' ? [i.id, "By Weight", i.kg.toFixed(2), "-", "-", i.totalCost.toFixed(2)] : [i.id, "By Volume", "-", `${i.length.toFixed(3)}x${i.width.toFixed(3)}x${i.height.toFixed(3)}`, i.volume.toFixed(3), i.totalCost.toFixed(2)]);
             
-            // 修改位置：styles 和 headStyles 中添加 textColor: [0,0,0] 让表格文字变黑色
+            // 修改: 表头颜色从蓝色 [230,240,255] 改为黑色 [0,0,0]
             doc.autoTable({ 
                 startY: yPos, 
                 head: [headers], 
                 body: body, 
                 theme: 'grid', 
-                styles: { fontSize: 10, font: 'SourceHanSans', halign: 'center', textColor: [0, 0, 0] },
-                headStyles: { fillColor: [230, 240, 255], textColor: [0, 0, 0] },
-                margin: { top: margin, bottom: 45 }
+                styles: { fontSize: 9, font: 'SourceHanSans', halign: 'center', textColor: [0,0,0] },
+                headStyles: { fillColor: [0,0,0], textColor: [255,255,255], fontStyle: 'bold' },
+                margin: { top: margin, bottom: 45 } 
             });
-            
             let finalY = doc.autoTable.previous.finalY;
             const totalWeight = cargoData.reduce((s,i)=>s+(i.kg||0),0).toFixed(2);
             const totalVol = cargoData.reduce((s,i)=>s+(i.volume||0),0).toFixed(3);
-            doc.setFontSize(11);
-            doc.setTextColor(0, 0, 0);
-            doc.text(`Total Weight: ${totalWeight} kg`, margin, finalY+5);
+            doc.setFontSize(10); doc.text(`Total Weight: ${totalWeight} kg`, margin, finalY+5);
             doc.text(`Total Volume: ${totalVol} m³`, pageWidth-margin, finalY+5, {align:'right'});
             const totalRMB = cargoData.reduce((s,i)=>s+i.totalCost,0).toFixed(2);
             const totalMMK = Math.round(parseFloat(totalRMB)*exRate).toLocaleString('en-US');
-            doc.setFontSize(12); doc.setFont(undefined, 'bold'); 
-            doc.setTextColor(0, 0, 0);
-            doc.text("Total Freight (RMB):", margin, finalY+15);
-            doc.text(`${totalRMB} ¥`, pageWidth-margin, finalY+15, {align:'right'});
-            doc.setFontSize(10); 
-            doc.text("Exchange Rate:", margin, finalY+23);
-            doc.text(`1 ¥ = ${exRate.toFixed(2)} Ks`, pageWidth-margin, finalY+23, {align:'right'});
-            doc.setFontSize(13); doc.setTextColor(61,149,255);
-            doc.text("Total Remittance Amount (MMK):", margin, finalY+33);
-            doc.text(`${totalMMK} Ks`, pageWidth-margin, finalY+33, {align:'right'});
+            doc.setFontSize(11); doc.setFont(undefined, 'bold'); doc.text("Total Freight (RMB):", margin, finalY+13);
+            doc.text(`${totalRMB} ¥`, pageWidth-margin, finalY+13, {align:'right'});
+            doc.setFontSize(9); doc.text("Exchange Rate:", margin, finalY+20);
+            doc.text(`1 ¥ = ${exRate.toFixed(2)} Ks`, pageWidth-margin, finalY+20, {align:'right'});
+            doc.setFontSize(12); doc.setTextColor(61,149,255);
+            doc.text("Total Remittance Amount (MMK):", margin, finalY+28);
+            doc.text(`${totalMMK} Ks`, pageWidth-margin, finalY+28, {align:'right'});
             doc.setTextColor(0,0,0);
             const idsWithImg = Object.keys(cargoImages).filter(id=>cargoImages[id]?.length);
             if(idsWithImg.length){
                 doc.addPage(); if(bgImageData) applyBg(doc, bgImageData);
                 let cy = margin;
-                doc.setFontSize(16); 
-                doc.setTextColor(0, 0, 0);
-                doc.text('Cargo Images', pageWidth/2, cy, {align:'center'}); cy+=15;
+                doc.setFontSize(14); doc.text('Cargo Images', pageWidth/2, cy, {align:'center'}); cy+=12;
                 for(const cid of idsWithImg){
                     for(const imgSrc of cargoImages[cid]){
                         const imgObj = new Image(); imgObj.src=imgSrc;
@@ -841,46 +969,38 @@
                         const ratio = imgObj.naturalHeight/imgObj.naturalWidth;
                         const imgW = pageWidth-2*margin;
                         const imgH = imgW*ratio;
-                        if(cy+imgH>pageHeight-margin){ doc.addPage(); if(bgImageData) applyBg(doc, bgImageData); cy=margin; doc.setFontSize(12); doc.setTextColor(0, 0, 0); doc.text('Cargo Images (continued)', pageWidth/2, cy, {align:'center'}); cy+=12; }
-                        doc.setTextColor(0, 0, 0);
-                        doc.text(`Cargo #${cid} Image`, margin, cy-4);
+                        if(cy+imgH>pageHeight-margin){ doc.addPage(); if(bgImageData) applyBg(doc, bgImageData); cy=margin; doc.setFontSize(12); doc.text('Cargo Images (continued)', pageWidth/2, cy, {align:'center'}); cy+=10; }
+                        doc.text(`Cargo #${cid} Image`, margin, cy-3);
                         doc.addImage(imgSrc, 'JPEG', margin, cy, imgW, imgH, undefined, 'SLOW');
-                        cy += imgH+15;
+                        cy += imgH+12;
                     }
                 }
             }
             return doc.output('blob');
         }
 
-        // 导出并分享: 完全移除freight文字，自定义分享文本 = 客户名称 + 订单日期
         async function shareToTelegram() {
             const customerName = customerNameInput.value.trim();
             const orderDates = Array.from(document.querySelectorAll('.order-date-input')).map(inp => inp.value.trim()).filter(Boolean);
             if (!customerName || orderDates.length === 0) {
-                showModal('Please enter customer name and at least one order date!');
+                showModal('Please enter customer name and order date!');
                 return;
             }
             try {
-                showLoadingToast('Generating PDF & sharing...');
+                showLoadingToast('Generating PDF...');
                 const pdfBlob = await generatePdfBlob();
-                // 构建文件名: 客户名称_第一个订单日期.pdf
                 const firstOrderDate = orderDates[0] || 'nodate';
                 const safeName = customerName.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_');
                 const fileName = `${safeName}_${firstOrderDate}_Freight.pdf`;
                 const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
-                
-                // 自定义分享文本：仅显示客户名称和日期，彻底去除 "Freight quote for" 等字样
-                const shareText = `${customerName} | Order Date: ${orderDates.join(', ')}`;
-                
                 if (navigator.canShare && navigator.canShare({ files: [file] })) {
                     await navigator.share({
                         title: 'Freight Calculation',
-                        text: shareText,    // 修改点：分享文本现在为客户名称 + 订单日期，不再包含 freight
+                        text: `Freight quote for ${customerName}`,
                         files: [file]
                     });
                     hideLoadingToast();
                 } else {
-                    // fallback 保存PDF并提示手动分享
                     const url = URL.createObjectURL(pdfBlob);
                     const a = document.createElement('a');
                     a.href = url;
@@ -890,12 +1010,12 @@
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                     hideLoadingToast();
-                    showModal('PDF saved! Please open Telegram and share the downloaded file.');
+                    showModal('PDF saved!');
                 }
             } catch (err) {
                 hideLoadingToast();
                 console.error(err);
-                showModal('Sharing failed: ' + err.message);
+                showModal('Failed: ' + err.message);
             }
         }
 
