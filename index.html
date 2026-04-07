@@ -23,8 +23,8 @@
         body {
             font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', system-ui, 'Segoe UI', Roboto, sans-serif;
             background: #f2f2f6;
-            /* 修改点3: 增加顶部安全区域，避免与灵动岛重叠 */
-            padding: calc(12px + env(safe-area-inset-top, 0px)) 12px 32px 12px;
+            /* 修改 3：优化灵动岛重叠，增加顶部间距并适配安全区域 */
+            padding: calc(env(safe-area-inset-top) + 20px) 12px 32px;
             min-height: 100vh;
         }
 
@@ -71,7 +71,6 @@
             border-radius: 30px;
         }
 
-        /* iOS 风格卡片 */
         .card {
             background: #ffffff;
             border-radius: 22px;
@@ -106,7 +105,6 @@
             padding: 14px 16px;
         }
         
-        /* ========= 全局输入框统一样式：内边距10px，文字居中 ========= */
         input, .ios-input, .date-item input, .dimension-row input, .kg-input, .length-input, .width-input, .height-input, .order-date-input {
             background: #f9f9fb;
             border: 0.5px solid #e5e5ea;
@@ -128,7 +126,6 @@
             box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
         }
         
-        /* 针对type="number"保持居中 */
         input[type="number"] {
             text-align: center;
             -moz-appearance: textfield;
@@ -154,7 +151,6 @@
             text-align: left;
         }
         
-        /* 日期列表 */
         .date-item {
             display: flex;
             gap: 8px;
@@ -180,7 +176,6 @@
             transform: scale(0.96);
         }
         
-        /* 货物卡片 */
         .cargo-card {
             background: #ffffff;
             border-radius: 18px;
@@ -205,7 +200,6 @@
             margin-right: 6px;
         }
         
-        /* 单选组 */
         .radio-group {
             display: flex;
             gap: 20px;
@@ -230,7 +224,6 @@
             accent-color: #007aff;
         }
         
-        /* 三列输入 - 保证每个输入框也是居中+10px内边距 */
         .dimension-row {
             display: flex;
             gap: 10px;
@@ -241,7 +234,6 @@
             text-align: center;
         }
         
-        /* 按钮样式 */
         .btn-primary, .btn-secondary, .btn-clear, .btn-danger {
             transition: all 0.08s linear;
             cursor: pointer;
@@ -316,7 +308,6 @@
             margin-bottom: 0;
         }
         
-        /* 结果网格 */
         .results-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -356,7 +347,6 @@
             letter-spacing: -0.3px;
         }
         
-        /* 可折叠 */
         .collapsible-header {
             display: flex;
             justify-content: space-between;
@@ -385,7 +375,7 @@
             transform: rotate(180deg);
         }
         .collapsible-content {
-            max-height: 300px;
+            max-height: 500px;
             overflow: hidden;
             transition: max-height 0.3s;
         }
@@ -405,10 +395,14 @@
             display: none;
         }
         
-        /* 表格 */
+        /* 修改 1：Cargo Details 表格增加滚动限制（适配约7行高度） */
         .cargo-table-wrapper {
             overflow-x: auto;
+            overflow-y: auto;
             margin-top: 10px;
+            max-height: 310px; /* 大约 7 个项目的高度 */
+            border: 0.5px solid #e5e5ea;
+            border-radius: 12px;
         }
         .cargo-table-wrapper table {
             width: 100%;
@@ -420,13 +414,16 @@
             padding: 10px 6px;
             font-weight: 590;
             color: #3a3a3c;
+            position: sticky; /* 表头固定 */
+            top: 0;
+            z-index: 10;
         }
         .cargo-table-wrapper td {
             padding: 10px 6px;
             border-bottom: 0.5px solid #e5e5ea;
+            background: white;
         }
         
-        /* ========= 图片网格 - 预览图片更大 ========= */
         .image-grid {
             display: flex;
             flex-wrap: wrap;
@@ -435,7 +432,7 @@
             align-items: flex-start;
         }
         .preview-block {
-            width: 100px;        /* 放大预览尺寸 */
+            width: 100px;
             height: 100px;
             border-radius: 16px;
             overflow: hidden;
@@ -493,7 +490,6 @@
             font-weight: 500;
         }
         
-        /* 进度条模态框 */
         .progress-overlay {
             position: fixed;
             top: 0;
@@ -577,21 +573,6 @@
         .items-center { align-items: center; }
         .justify-between { justify-content: space-between; }
         .gap-2 { gap: 8px; }
-        
-        /* 修改点1: 限制Cargo Details表格最大高度，超过7行时滚动 */
-        .cargo-table-wrapper {
-            max-height: 380px;
-            overflow-y: auto;
-        }
-        .cargo-table-limit-warning {
-            text-align: center;
-            font-size: 11px;
-            color: #ff9500;
-            background: #fff8e7;
-            padding: 6px;
-            border-radius: 10px;
-            margin-top: 8px;
-        }
     </style>
 
     <script>
@@ -659,7 +640,6 @@
         <div class="version">v2.5</div>
     </div>
 
-    <!-- Customer Info -->
     <div class="card">
         <div class="card-header"><h3><i class="fas fa-user-circle"></i>Customer</h3><button id="clear-all-btn" class="btn-clear"><i class="fas fa-eraser"></i> Clear</button></div>
         <div class="card-body">
@@ -671,7 +651,6 @@
     <div id="cargo-list"></div>
     <button id="add-cargo-btn" class="btn-primary mb-2"><i class="fas fa-plus-circle"></i> Add Cargo</button>
 
-    <!-- Rates & Results -->
     <div class="card">
         <div class="card-header"><h3><i class="fas fa-sliders-h"></i>Rates</h3></div>
         <div class="card-body">
@@ -746,37 +725,7 @@
     function showModal(msg) { const modal = document.getElementById('custom-modal'); document.getElementById('modal-message').innerText = msg; modal.classList.remove('hidden'); setTimeout(() => modal.classList.add('hidden'), 2000); }
     window.closeModal = () => document.getElementById('custom-modal').classList.add('hidden');
     
-    // 修改点1: Cargo Details 表格最多显示7条，超过7条显示滚动条和提示
-    function updateCargoDetailsTable() { 
-        const previewTotalSpan = document.getElementById('previewTotalRMB'); 
-        if (cargoData.length === 0) { 
-            cargoDetailsTableContainer.innerHTML = `<p class="text-center text-gray-400 py-4 text-xs">No cargo added</p>`; 
-            if(previewTotalSpan) previewTotalSpan.innerText = '0.00 ¥'; 
-            return; 
-        } 
-        const totalCostRMB = cargoData.reduce((sum, i) => sum + i.totalCost, 0).toFixed(2); 
-        if(previewTotalSpan) previewTotalSpan.innerText = totalCostRMB + ' ¥'; 
-        
-        let html = `<div class="cargo-table-wrapper" style="max-height: 380px; overflow-y: auto;"><table style="width:100%; border-collapse:collapse;"><thead><tr><th>#</th><th>Type</th><th>Weight</th><th>Dimensions</th><th>Vol</th><th>¥</th></tr></thead><tbody>`;
-        
-        cargoData.forEach(item => { 
-            if (item.type === 'weight') { 
-                html += `<tr><td class="font-medium">${item.id}</td><td>W</td><td>${item.kg.toFixed(2)}</td><td>-</td><td>-</td><td class="font-semibold">${item.totalCost.toFixed(2)}</td></tr>`; 
-            } else { 
-                const dim = `${item.length.toFixed(2)}x${item.width.toFixed(2)}x${item.height.toFixed(2)}`; 
-                html += `<tr><td class="font-medium">${item.id}</td><td>V</td><td>-</td><td>${dim}</td><td>${item.volume.toFixed(3)}</td><td class="font-semibold">${item.totalCost.toFixed(2)}</td></tr>`; 
-            } 
-        }); 
-        
-        html += `<tr class="border-t"><td colspan="5" class="text-right font-medium">Total</td><td class="font-bold">${totalCostRMB}</td></tr></tbody></table></div>`;
-        
-        // 修改点1: 超过7条时显示提示
-        if (cargoData.length > 7) {
-            html += `<div class="cargo-table-limit-warning"><i class="fas fa-info-circle"></i> 当前显示 ${cargoData.length} 条，滚动查看全部</div>`;
-        }
-        
-        cargoDetailsTableContainer.innerHTML = html; 
-    }
+    function updateCargoDetailsTable() { const previewTotalSpan = document.getElementById('previewTotalRMB'); if (cargoData.length === 0) { cargoDetailsTableContainer.innerHTML = `<p class="text-center text-gray-400 py-4 text-xs">No cargo added</p>`; if(previewTotalSpan) previewTotalSpan.innerText = '0.00 ¥'; return; } const totalCostRMB = cargoData.reduce((sum, i) => sum + i.totalCost, 0).toFixed(2); if(previewTotalSpan) previewTotalSpan.innerText = totalCostRMB + ' ¥'; let html = `<div class="cargo-table-wrapper"><table><thead><tr><th>#</th><th>Type</th><th>Weight</th><th>Dimensions</th><th>Vol</th><th>¥</th></tr></thead><tbody>`; cargoData.forEach(item => { if (item.type === 'weight') html += `<tr><td class="font-medium">${item.id}</td><td>W</td><td>${item.kg.toFixed(2)}</td><td>-</td><td>-</td><td class="font-semibold">${item.totalCost.toFixed(2)}</td></tr>`; else { const dim = `${item.length.toFixed(2)}x${item.width.toFixed(2)}x${item.height.toFixed(2)}`; html += `<tr><td class="font-medium">${item.id}</td><td>V</td><td>-</td><td>${dim}</td><td>${item.volume.toFixed(3)}</td><td class="font-semibold">${item.totalCost.toFixed(2)}</td></tr>`; } }); html += `<tr class="border-t"><td colspan="5" class="text-right font-medium">Total</td><td class="font-bold">${totalCostRMB}</td></tr></tbody></table></div>`; cargoDetailsTableContainer.innerHTML = html; }
     
     function recalculateAll() { let totalKg = 0, totalVolume = 0, totalKgCost = 0, totalVolumeCost = 0; cargoData.length = 0; const kgRate = parseFloat(kgRateInput.value) || 0, cbmRate = parseFloat(cbmRateInput.value) || 0, exchangeRate = parseFloat(exchangeRateInput.value) || 0; document.querySelectorAll('.cargo-item').forEach(item => { const cargoId = item.id.split('-')[1]; const calcType = item.querySelector(`input[name="calc-type-${cargoId}"]:checked`).value; let singleCost = 0, kg = 0, len = 0, wid = 0, hei = 0, vol = 0; if (calcType === 'weight') { kg = parseFloat(item.querySelector('.kg-input').value) || 0; singleCost = kg * kgRate; totalKgCost += singleCost; totalKg += kg; } else { len = parseFloat(item.querySelector('.length-input').value) || 0; wid = parseFloat(item.querySelector('.width-input').value) || 0; hei = parseFloat(item.querySelector('.height-input').value) || 0; vol = len * wid * hei; singleCost = vol * cbmRate; totalVolumeCost += singleCost; totalVolume += vol; } cargoData.push({ id: cargoId, type: calcType, kg, length: len, width: wid, height: hei, volume: vol, totalCost: singleCost }); const detailsDiv = item.querySelector('.calculation-details'); if (calcType === 'weight') detailsDiv.innerHTML = `<div class="mt-2 text-[#007aff] text-xs font-medium">Freight: ${singleCost.toFixed(2)} ¥</div>`; else detailsDiv.innerHTML = `<div class="mt-2 text-[#007aff] text-xs">Volume: ${vol.toFixed(3)} m³<br>Freight: ${singleCost.toFixed(2)} ¥</div>`; }); const totalRMB = totalKgCost + totalVolumeCost; const totalMMK = Math.round(totalRMB * exchangeRate); document.getElementById('totalKg').innerText = totalKg.toFixed(1) + ' kg'; document.getElementById('totalVolume').innerText = totalVolume.toFixed(3) + ' m³'; document.getElementById('totalKgCost').innerText = totalKgCost.toFixed(0) + ' ¥'; document.getElementById('totalVolumeCost').innerText = totalVolumeCost.toFixed(0) + ' ¥'; document.getElementById('totalCostRMB').innerText = totalRMB.toFixed(0) + ' ¥'; document.getElementById('totalCostMMK').innerText = totalMMK.toLocaleString('en-US') + ' Ks'; updateCargoDetailsTable(); saveData(); }
     
@@ -791,53 +740,40 @@
     
     addCargoBtn.addEventListener('click', () => addCargoItem()); clearAllBtn.addEventListener('click', clearAllData); kgRateInput.addEventListener('input', recalculateAll); cbmRateInput.addEventListener('input', recalculateAll); exchangeRateInput.addEventListener('input', recalculateAll); customerNameInput.addEventListener('input', recalculateAll);
     
-    // 修改点2: PDF第二页背景图修复 - 创建一个辅助函数来添加背景图到每一页
-    let bgImageDataCache = null;
-    
-    async function loadBgImage() {
-        if (bgImageDataCache) return bgImageDataCache;
-        try {
-            const resp = await fetch('bg.png');
-            if(resp.ok) {
-                const blob = await resp.blob();
-                bgImageDataCache = await new Promise(r => {
-                    const fr = new FileReader();
-                    fr.onloadend = () => r(fr.result);
-                    fr.readAsDataURL(blob);
-                });
-                return bgImageDataCache;
-            }
-        } catch(e) {}
-        return null;
-    }
-    
-    // 添加背景图到当前页面的函数
-    function addBackgroundToPage(doc, imgData, pageWidth, pageHeight) {
-        if (imgData) {
-            doc.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
-        }
-    }
-    
     async function generatePdfBlob(progress) { 
         const { jsPDF } = window.jspdf; 
         progress.update(10, "读取信息..."); 
         const customerName = customerNameInput.value.trim(); 
         const orderDates = Array.from(document.querySelectorAll('.order-date-input')).map(inp => inp.value.trim()).filter(Boolean); 
         if (!customerName || orderDates.length === 0) throw new Error('Missing customer or dates'); 
+        
         progress.update(20, "准备文档..."); 
-        
-        // 加载背景图
-        const bgImageData = await loadBgImage();
-        
+        let bgImageData = null; 
+        try { 
+            const resp = await fetch('bg.png'); 
+            if(resp.ok) { 
+                const blob = await resp.blob(); 
+                bgImageData = await new Promise(r => { 
+                    const fr = new FileReader(); 
+                    fr.onloadend = () => r(fr.result); 
+                    fr.readAsDataURL(blob); 
+                }); 
+            } 
+        } catch(e){} 
+
         const doc = new jsPDF('p', 'mm', 'a4'); 
         const pageWidth = doc.internal.pageSize.getWidth(); 
         const pageHeight = doc.internal.pageSize.getHeight(); 
         const margin = 15; 
-        let yPos = 30; 
         
-        // 修改点2: 第一页添加背景图
-        if(bgImageData) addBackgroundToPage(doc, bgImageData, pageWidth, pageHeight);
+        // 修改 2：PDF 绘制背景的通用逻辑（支持多页自动添加）
+        const applyBg = (d, img) => { 
+            if(img) d.addImage(img, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST'); 
+        }; 
+
+        applyBg(doc, bgImageData); 
         
+        let yPos = 30;
         doc.setFont('Montserrat', 'normal'); 
         doc.setFontSize(22); 
         doc.setFont(undefined, 'bold'); 
@@ -850,11 +786,12 @@
         const dateStr = orderDates.map(d=>d.split('-').slice(1,3).join('-')).join(', '); 
         doc.text(`Order Date: ${dateStr}`, margin, yPos); 
         yPos+=10; 
+
         const kgRate = parseFloat(kgRateInput.value)||0, cbmRate = parseFloat(cbmRateInput.value)||0, exRate = parseFloat(exchangeRateInput.value)||0; 
         const headers = ["No.", "Type", `Weight(kg/${kgRate}¥)`, "Dimensions(m)", `Volume(m³/${cbmRate}¥)`, "Freight(¥)"]; 
         const body = cargoData.map(i => i.type==='weight' ? [i.id, "By Weight", i.kg.toFixed(2), "-", "-", i.totalCost.toFixed(2)] : [i.id, "By Volume", "-", `${i.length.toFixed(3)}x${i.width.toFixed(3)}x${i.height.toFixed(3)}`, i.volume.toFixed(3), i.totalCost.toFixed(2)]); 
-        progress.update(40, "生成表格..."); 
         
+        progress.update(40, "生成表格..."); 
         doc.autoTable({ 
             startY: yPos, 
             head: [headers], 
@@ -863,14 +800,12 @@
             styles: { fontSize: 9, font: 'SourceHanSans', halign: 'center', textColor: [0,0,0] }, 
             headStyles: { fillColor: [0,0,0], textColor: [255,255,255], fontStyle: 'bold' }, 
             margin: { top: margin, bottom: 45 },
-            // 修改点2: 在表格添加新页时自动添加背景图
-            addPageContent: function(data) {
-                if(bgImageData) {
-                    addBackgroundToPage(doc, bgImageData, pageWidth, pageHeight);
-                }
+            // 修改 2：修复订单多页时，自动在新页面添加背景图
+            didAddPage: function (data) {
+                applyBg(doc, bgImageData);
             }
         }); 
-        
+
         let finalY = doc.autoTable.previous.finalY; 
         const totalWeight = cargoData.reduce((s,i)=>s+(i.kg||0),0).toFixed(2); 
         const totalVol = cargoData.reduce((s,i)=>s+(i.volume||0),0).toFixed(3); 
@@ -891,12 +826,12 @@
         doc.text("Total Remittance Amount (MMK):", margin, finalY+28); 
         doc.text(`${totalMMK} Ks`, pageWidth-margin, finalY+28, {align:'right'}); 
         doc.setTextColor(0,0,0); 
+
         progress.update(60, "处理图片..."); 
         const idsWithImg = Object.keys(cargoImages).filter(id=>cargoImages[id]?.length); 
         if(idsWithImg.length){ 
             doc.addPage(); 
-            // 修改点2: 图片页面添加背景图
-            if(bgImageData) addBackgroundToPage(doc, bgImageData, pageWidth, pageHeight);
+            applyBg(doc, bgImageData); 
             let cy = margin; 
             doc.setFontSize(14); 
             doc.text('Cargo Images', pageWidth/2, cy, {align:'center'}); 
@@ -916,8 +851,7 @@
                     const imgH = imgW*ratio; 
                     if(cy+imgH>pageHeight-margin){ 
                         doc.addPage(); 
-                        // 修改点2: 新图片页面添加背景图
-                        if(bgImageData) addBackgroundToPage(doc, bgImageData, pageWidth, pageHeight);
+                        applyBg(doc, bgImageData); 
                         cy=margin; 
                         doc.setFontSize(12); 
                         doc.text('Cargo Images (continued)', pageWidth/2, cy, {align:'center'}); 
