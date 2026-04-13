@@ -22,8 +22,12 @@
 
         body {
             font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', system-ui, 'Segoe UI', Roboto, sans-serif;
-            background: #f2f2f6;
-            /* 修改 3：优化灵动岛重叠，增加顶部间距并适配安全区域 */
+            /* 深色渐变背景 + 略微放大，凸显玻璃感 */
+background: 
+    radial-gradient(circle at 15% 20%, #3b82f6 0%, transparent 40%),
+    radial-gradient(circle at 75% 80%, #a855f7 0%, transparent 40%),
+    radial-gradient(circle at 40% 40%, #ec4899 0%, transparent 70%),
+    #0f0f1a;
             padding: calc(env(safe-area-inset-top) + 20px) 12px 32px;
             min-height: 100vh;
         }
@@ -33,18 +37,26 @@
             margin: 0 auto;
         }
 
-        /* iOS 风格头部 */
+        /* ========= 玻璃态头部 + 悬停动画 ========= */
         .compact-header {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px;
             padding: 12px 18px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 1px 0 rgba(255,255,255,0.5) inset;
-            border: 0.5px solid rgba(224, 224, 230, 0.6);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.25s ease;
+        }
+        .compact-header:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
         }
         .brand {
             display: flex;
@@ -54,35 +66,46 @@
         }
         .brand-name {
             font-weight: 630;
-            font-size: 17px;
-            color: #1c1c1e;
+            font-size: 18px;
+            color: #ffffff;
             letter-spacing: -0.3px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
         .brand-sub {
             font-size: 11px;
-            color: #8e8e93;
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 450;
         }
         .version {
             font-size: 10px;
-            color: #8e8e93;
-            background: rgba(120, 120, 128, 0.12);
+            color: rgba(255, 255, 255, 0.85);
+            background: rgba(0, 0, 0, 0.3);
             padding: 4px 10px;
-            border-radius: 30px;
+            border-radius: 40px;
         }
 
+        /* ========= 玻璃态卡片 + 悬停动画 ========= */
         .card {
-            background: #ffffff;
-            border-radius: 22px;
-            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 28px;
+            margin-bottom: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04), 0 0.5px 0 rgba(0,0,0,0.02);
-            border: 0.5px solid rgba(224, 224, 230, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.25s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.35);
         }
         
         .card-header {
             padding: 14px 16px 8px 16px;
-            border-bottom: 0.5px solid #e5e5ea;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -90,40 +113,46 @@
         .card-header h3 {
             font-size: 16px;
             font-weight: 590;
-            color: #1c1c1e;
+            color: #ffffff;
             margin: 0;
             display: flex;
             align-items: center;
             gap: 8px;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
         }
         .card-header h3 i {
             font-size: 16px;
-            color: #007aff;
+            color: #60a5fa;
         }
         
         .card-body {
             padding: 14px 16px;
         }
         
+        /* ========= 玻璃态输入框 ========= */
         input, .ios-input, .date-item input, .dimension-row input, .kg-input, .length-input, .width-input, .height-input, .order-date-input {
-            background: #f9f9fb;
-            border: 0.5px solid #e5e5ea;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
             padding: 10px 10px !important;
             font-size: 16px;
             width: 100%;
             outline: none;
             transition: all 0.2s ease;
-            color: #1c1c1e;
+            color: #ffffff;
             font-weight: 450;
             text-align: center !important;
             box-sizing: border-box;
         }
         
         input:focus {
-            border-color: #007aff;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+            border-color: #60a5fa;
+            background: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.55);
         }
         
         input[type="number"] {
@@ -144,7 +173,7 @@
         .label {
             font-size: 13px;
             font-weight: 510;
-            color: #6c6c70;
+            color: rgba(255, 255, 255, 0.85);
             margin-bottom: 6px;
             display: block;
             letter-spacing: -0.2px;
@@ -160,29 +189,39 @@
             flex: 1;
         }
         .remove-date-btn {
-            background: #f2f2f6;
+            background: rgba(255, 255, 255, 0.1);
             width: 44px;
             height: 44px;
-            border-radius: 12px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #8e8e93;
+            color: rgba(255, 255, 255, 0.8);
             cursor: pointer;
-            transition: all 0.1s ease;
+            transition: all 0.15s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .remove-date-btn:active {
-            background: #e5e5ea;
-            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(0.94);
         }
         
+        /* ========= 玻璃态货物卡片 + 悬停 ========= */
         .cargo-card {
-            background: #ffffff;
-            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(14px);
+            border-radius: 22px;
             padding: 14px;
-            margin-bottom: 10px;
-            border: 0.5px solid #e5e5ea;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.25s ease;
+        }
+        .cargo-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.2);
         }
         .cargo-header {
             display: flex;
@@ -193,17 +232,17 @@
         .cargo-title {
             font-weight: 590;
             font-size: 15px;
-            color: #1c1c1e;
+            color: #ffffff;
         }
         .cargo-title i {
-            color: #007aff;
+            color: #60a5fa;
             margin-right: 6px;
         }
         
         .radio-group {
             display: flex;
             gap: 20px;
-            background: #f2f2f6;
+            background: rgba(0, 0, 0, 0.25);
             padding: 5px 16px;
             border-radius: 40px;
             width: fit-content;
@@ -215,13 +254,13 @@
             gap: 8px;
             font-size: 14px;
             font-weight: 500;
-            color: #3a3a3c;
+            color: #ffffff;
         }
         .radio-item input {
             width: 18px;
             height: 18px;
             margin: 0;
-            accent-color: #007aff;
+            accent-color: #60a5fa;
         }
         
         .dimension-row {
@@ -234,19 +273,21 @@
             text-align: center;
         }
         
+        /* ========= 玻璃态按钮 + 悬停动画 ========= */
         .btn-primary, .btn-secondary, .btn-clear, .btn-danger {
-            transition: all 0.08s linear;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
         }
         .btn-primary:active, .btn-secondary:active, .btn-clear:active, .btn-danger:active {
-            transform: scale(0.97);
+            transform: scale(0.96);
         }
         
         .btn-primary {
-            background: #007aff;
-            border: none;
-            border-radius: 14px;
+            background: rgba(96, 165, 250, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
             padding: 14px 18px;
             font-weight: 590;
             font-size: 16px;
@@ -256,46 +297,58 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 2px 8px rgba(0,122,255,0.25);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: rgba(96, 165, 250, 0.95);
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.3);
         }
         .btn-primary:active {
-            background: #005fc1;
+            transform: translateY(1px);
         }
         
         .btn-secondary {
-            background: #f2f2f6;
-            border: 0.5px solid #e5e5ea;
-            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 18px;
             padding: 12px 16px;
             font-weight: 510;
             font-size: 15px;
-            color: #007aff;
+            color: #bfdbfe;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-        .btn-secondary:active {
-            background: #e5e5ea;
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-2px);
         }
         
         .btn-clear {
-            background: rgba(255, 59, 48, 0.08);
-            border: 0.5px solid rgba(255, 59, 48, 0.2);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
             padding: 6px 14px;
             font-size: 12px;
             font-weight: 510;
-            color: #ff3b30;
+            color: #fca5a5;
+        }
+        .btn-clear:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-1px);
         }
         
         .btn-danger {
-            background: #ff3b30;
-            box-shadow: 0 2px 10px rgba(255,59,48,0.25);
+            background: rgba(239, 68, 68, 0.8);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        .btn-danger:active {
-            background: #d93b30;
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.95);
+            transform: translateY(-2px);
         }
         
         .rate-row {
@@ -308,45 +361,59 @@
             margin-bottom: 0;
         }
         
+        /* ========= 结果区域玻璃态 ========= */
         .results-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 12px;
         }
         .result-item {
-            background: #f9f9fb;
-            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(6px);
+            border-radius: 20px;
             padding: 12px 8px;
             text-align: center;
-            border: 0.5px solid #e5e5ea;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.2s;
+        }
+        .result-item:hover {
+            background: rgba(0, 0, 0, 0.35);
+            transform: translateY(-2px);
         }
         .result-label {
             font-size: 11px;
-            color: #8e8e93;
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 450;
         }
         .result-value {
             font-weight: 630;
             font-size: 15px;
-            color: #1c1c1e;
+            color: #ffffff;
             margin-top: 4px;
         }
         .result-total {
             grid-column: span 2;
-            background: #e8f0fe;
-            border-radius: 16px;
+            background: rgba(96, 165, 250, 0.2);
+            backdrop-filter: blur(6px);
+            border-radius: 20px;
             padding: 12px;
             text-align: center;
-            border: 0.5px solid #d9e5ff;
+            border: 1px solid rgba(96, 165, 250, 0.4);
+            transition: all 0.2s;
+        }
+        .result-total:hover {
+            background: rgba(96, 165, 250, 0.3);
+            transform: translateY(-2px);
         }
         .total-value {
             font-size: 22px;
             font-weight: 700;
-            color: #007aff;
+            color: #93c5fd;
             letter-spacing: -0.3px;
         }
         
+        /* ========= 折叠面板 ========= */
         .collapsible-header {
             display: flex;
             justify-content: space-between;
@@ -357,12 +424,12 @@
         .collapsible-header h4 {
             font-size: 14px;
             font-weight: 590;
-            color: #1c1c1e;
+            color: #ffffff;
         }
         .collapse-icon {
             font-size: 12px;
-            color: #007aff;
-            background: #f2f2f6;
+            color: #bfdbfe;
+            background: rgba(0, 0, 0, 0.3);
             width: 28px;
             height: 28px;
             border-radius: 20px;
@@ -383,47 +450,54 @@
             max-height: 0;
         }
         .collapsed-preview {
-            background: #f9f9fb;
-            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 18px;
             padding: 10px 14px;
             margin: 8px 0;
             display: flex;
             justify-content: space-between;
             font-size: 13px;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         .collapsed-preview.hidden {
             display: none;
         }
         
-        /* 修改 1：Cargo Details 表格增加滚动限制（适配约7行高度） */
+        /* 货物表格 - 玻璃滚动区 */
         .cargo-table-wrapper {
             overflow-x: auto;
             overflow-y: auto;
             margin-top: 10px;
-            max-height: 310px; /* 大约 7 个项目的高度 */
-            border: 0.5px solid #e5e5ea;
-            border-radius: 12px;
+            max-height: 310px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
         }
         .cargo-table-wrapper table {
             width: 100%;
             font-size: 12px;
             border-collapse: collapse;
+            color: #ffffff;
         }
         .cargo-table-wrapper th {
-            background: #f9f9fb;
+            background: rgba(0, 0, 0, 0.4);
             padding: 10px 6px;
             font-weight: 590;
-            color: #3a3a3c;
-            position: sticky; /* 表头固定 */
+            color: rgba(255, 255, 255, 0.9);
+            position: sticky;
             top: 0;
             z-index: 10;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         .cargo-table-wrapper td {
             padding: 10px 6px;
-            border-bottom: 0.5px solid #e5e5ea;
-            background: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: transparent;
         }
         
+        /* 图片区域 */
         .image-grid {
             display: flex;
             flex-wrap: wrap;
@@ -434,12 +508,16 @@
         .preview-block {
             width: 100px;
             height: 100px;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            background: #f9f9fb;
-            border: 0.5px solid #e5e5ea;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             position: relative;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s;
+        }
+        .preview-block:hover {
+            transform: scale(1.02);
         }
         .preview-block img {
             width: 100%;
@@ -450,8 +528,8 @@
             position: absolute;
             top: 4px;
             right: 4px;
-            background: rgba(0,0,0,0.65);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
             width: 24px;
             height: 24px;
             border-radius: 30px;
@@ -466,58 +544,60 @@
         .camera-block {
             width: 100px;
             height: 100px;
-            border-radius: 16px;
-            background: rgba(0,122,255,0.08);
-            border: 1.5px dashed #007aff;
+            border-radius: 20px;
+            background: rgba(96, 165, 250, 0.15);
+            border: 1.5px dashed #60a5fa;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             gap: 6px;
-            transition: background 0.1s;
+            transition: all 0.2s;
         }
         .camera-block:active {
-            background: rgba(0,122,255,0.2);
+            background: rgba(96, 165, 250, 0.35);
+            transform: scale(0.96);
         }
         .camera-block i {
             font-size: 28px;
-            color: #007aff;
+            color: #60a5fa;
         }
         .camera-block span {
             font-size: 10px;
-            color: #007aff;
+            color: #bfdbfe;
             font-weight: 500;
         }
         
+        /* 进度遮罩 / 模态框 玻璃感增强 */
         .progress-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(20px);
             z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
         }
         .progress-card {
-            background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(30px);
-            border-radius: 32px;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(24px);
+            border-radius: 40px;
             width: 260px;
             padding: 28px 24px;
             text-align: center;
-            box-shadow: 0 25px 40px rgba(0,0,0,0.2);
-            border: 0.5px solid rgba(255,255,255,0.3);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
         }
         .progress-bar-container {
             width: 100%;
             height: 6px;
-            background: #e5e5ea;
+            background: rgba(255, 255, 255, 0.25);
             border-radius: 10px;
             overflow: hidden;
             margin: 20px 0 12px;
@@ -525,41 +605,32 @@
         .progress-bar-fill {
             width: 0%;
             height: 100%;
-            background: #007aff;
+            background: #60a5fa;
             border-radius: 10px;
             transition: width 0.15s linear;
         }
-        .progress-text {
-            font-size: 14px;
-            font-weight: 500;
-            color: #1c1c1e;
-        }
-        .progress-sub {
-            font-size: 12px;
-            color: #8e8e93;
-            margin-top: 6px;
-        }
-        
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(20px);
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .modal-card {
-            background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(30px);
-            border-radius: 32px;
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(24px);
+            border-radius: 40px;
             width: 260px;
             padding: 24px;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
         }
         .hidden { display: none; }
         
@@ -573,6 +644,19 @@
         .items-center { align-items: center; }
         .justify-between { justify-content: space-between; }
         .gap-2 { gap: 8px; }
+        
+        .calculation-details {
+            color: #93c5fd;
+        }
+        .text-gray-400 {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .font-medium {
+            font-weight: 500;
+        }
+        .border-t {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
     </style>
 
     <script>
@@ -612,7 +696,7 @@
             progressOverlay.className = 'progress-overlay';
             progressOverlay.innerHTML = `
                 <div class="progress-card">
-                    <i class="fas fa-file-pdf" style="font-size: 40px; color: #007aff; margin-bottom: 8px;"></i>
+                    <i class="fas fa-file-pdf" style="font-size: 40px; color: #60a5fa; margin-bottom: 8px;"></i>
                     <div class="progress-text" id="progressTitle">${title}</div>
                     <div class="progress-bar-container">
                         <div class="progress-bar-fill" id="progressFill"></div>
@@ -637,7 +721,7 @@
 <div class="main-container">
     <div class="compact-header">
         <div class="brand"><span class="brand-name">ANT China Supplier</span><span class="brand-sub">Smart Calculator</span></div>
-        <div class="version">v2.5</div>
+        <div class="version">v3.0</div>
     </div>
 
     <div class="card">
@@ -681,7 +765,7 @@
     </div>
     <button id="export-pdf-btn" class="btn-primary btn-danger"><i class="fas fa-share-nodes"></i> Export & Share PDF</button>
 </div>
-<div id="custom-modal" class="modal-overlay hidden"><div class="modal-card"><i class="fas fa-exclamation-circle" style="font-size: 40px; color: #007aff; margin-bottom: 12px;"></i><p id="modal-message" style="margin-bottom: 20px; font-weight: 500;">Please enter customer name and order date!</p><button onclick="closeModal()" class="btn-primary" style="padding: 10px;">OK</button></div></div>
+<div id="custom-modal" class="modal-overlay hidden"><div class="modal-card"><i class="fas fa-exclamation-circle" style="font-size: 40px; color: #60a5fa; margin-bottom: 12px;"></i><p id="modal-message" style="margin-bottom: 20px; font-weight: 500;">Please enter customer name and order date!</p><button onclick="closeModal()" class="btn-primary" style="padding: 10px;">OK</button></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -727,7 +811,7 @@
     
     function updateCargoDetailsTable() { const previewTotalSpan = document.getElementById('previewTotalRMB'); if (cargoData.length === 0) { cargoDetailsTableContainer.innerHTML = `<p class="text-center text-gray-400 py-4 text-xs">No cargo added</p>`; if(previewTotalSpan) previewTotalSpan.innerText = '0.00 ¥'; return; } const totalCostRMB = cargoData.reduce((sum, i) => sum + i.totalCost, 0).toFixed(2); if(previewTotalSpan) previewTotalSpan.innerText = totalCostRMB + ' ¥'; let html = `<div class="cargo-table-wrapper"><table><thead><tr><th>#</th><th>Type</th><th>Weight</th><th>Dimensions</th><th>Vol</th><th>¥</th></tr></thead><tbody>`; cargoData.forEach(item => { if (item.type === 'weight') html += `<tr><td class="font-medium">${item.id}</td><td>W</td><td>${item.kg.toFixed(2)}</td><td>-</td><td>-</td><td class="font-semibold">${item.totalCost.toFixed(2)}</td></tr>`; else { const dim = `${item.length.toFixed(2)}x${item.width.toFixed(2)}x${item.height.toFixed(2)}`; html += `<tr><td class="font-medium">${item.id}</td><td>V</td><td>-</td><td>${dim}</td><td>${item.volume.toFixed(3)}</td><td class="font-semibold">${item.totalCost.toFixed(2)}</td></tr>`; } }); html += `<tr class="border-t"><td colspan="5" class="text-right font-medium">Total</td><td class="font-bold">${totalCostRMB}</td></tr></tbody></table></div>`; cargoDetailsTableContainer.innerHTML = html; }
     
-    function recalculateAll() { let totalKg = 0, totalVolume = 0, totalKgCost = 0, totalVolumeCost = 0; cargoData.length = 0; const kgRate = parseFloat(kgRateInput.value) || 0, cbmRate = parseFloat(cbmRateInput.value) || 0, exchangeRate = parseFloat(exchangeRateInput.value) || 0; document.querySelectorAll('.cargo-item').forEach(item => { const cargoId = item.id.split('-')[1]; const calcType = item.querySelector(`input[name="calc-type-${cargoId}"]:checked`).value; let singleCost = 0, kg = 0, len = 0, wid = 0, hei = 0, vol = 0; if (calcType === 'weight') { kg = parseFloat(item.querySelector('.kg-input').value) || 0; singleCost = kg * kgRate; totalKgCost += singleCost; totalKg += kg; } else { len = parseFloat(item.querySelector('.length-input').value) || 0; wid = parseFloat(item.querySelector('.width-input').value) || 0; hei = parseFloat(item.querySelector('.height-input').value) || 0; vol = len * wid * hei; singleCost = vol * cbmRate; totalVolumeCost += singleCost; totalVolume += vol; } cargoData.push({ id: cargoId, type: calcType, kg, length: len, width: wid, height: hei, volume: vol, totalCost: singleCost }); const detailsDiv = item.querySelector('.calculation-details'); if (calcType === 'weight') detailsDiv.innerHTML = `<div class="mt-2 text-[#007aff] text-xs font-medium">Freight: ${singleCost.toFixed(2)} ¥</div>`; else detailsDiv.innerHTML = `<div class="mt-2 text-[#007aff] text-xs">Volume: ${vol.toFixed(3)} m³<br>Freight: ${singleCost.toFixed(2)} ¥</div>`; }); const totalRMB = totalKgCost + totalVolumeCost; const totalMMK = Math.round(totalRMB * exchangeRate); document.getElementById('totalKg').innerText = totalKg.toFixed(1) + ' kg'; document.getElementById('totalVolume').innerText = totalVolume.toFixed(3) + ' m³'; document.getElementById('totalKgCost').innerText = totalKgCost.toFixed(0) + ' ¥'; document.getElementById('totalVolumeCost').innerText = totalVolumeCost.toFixed(0) + ' ¥'; document.getElementById('totalCostRMB').innerText = totalRMB.toFixed(0) + ' ¥'; document.getElementById('totalCostMMK').innerText = totalMMK.toLocaleString('en-US') + ' Ks'; updateCargoDetailsTable(); saveData(); }
+    function recalculateAll() { let totalKg = 0, totalVolume = 0, totalKgCost = 0, totalVolumeCost = 0; cargoData.length = 0; const kgRate = parseFloat(kgRateInput.value) || 0, cbmRate = parseFloat(cbmRateInput.value) || 0, exchangeRate = parseFloat(exchangeRateInput.value) || 0; document.querySelectorAll('.cargo-item').forEach(item => { const cargoId = item.id.split('-')[1]; const calcType = item.querySelector(`input[name="calc-type-${cargoId}"]:checked`).value; let singleCost = 0, kg = 0, len = 0, wid = 0, hei = 0, vol = 0; if (calcType === 'weight') { kg = parseFloat(item.querySelector('.kg-input').value) || 0; singleCost = kg * kgRate; totalKgCost += singleCost; totalKg += kg; } else { len = parseFloat(item.querySelector('.length-input').value) || 0; wid = parseFloat(item.querySelector('.width-input').value) || 0; hei = parseFloat(item.querySelector('.height-input').value) || 0; vol = len * wid * hei; singleCost = vol * cbmRate; totalVolumeCost += singleCost; totalVolume += vol; } cargoData.push({ id: cargoId, type: calcType, kg, length: len, width: wid, height: hei, volume: vol, totalCost: singleCost }); const detailsDiv = item.querySelector('.calculation-details'); if (calcType === 'weight') detailsDiv.innerHTML = `<div class="mt-2 text-[#93c5fd] text-xs font-medium">Freight: ${singleCost.toFixed(2)} ¥</div>`; else detailsDiv.innerHTML = `<div class="mt-2 text-[#93c5fd] text-xs">Volume: ${vol.toFixed(3)} m³<br>Freight: ${singleCost.toFixed(2)} ¥</div>`; }); const totalRMB = totalKgCost + totalVolumeCost; const totalMMK = Math.round(totalRMB * exchangeRate); document.getElementById('totalKg').innerText = totalKg.toFixed(1) + ' kg'; document.getElementById('totalVolume').innerText = totalVolume.toFixed(3) + ' m³'; document.getElementById('totalKgCost').innerText = totalKgCost.toFixed(0) + ' ¥'; document.getElementById('totalVolumeCost').innerText = totalVolumeCost.toFixed(0) + ' ¥'; document.getElementById('totalCostRMB').innerText = totalRMB.toFixed(0) + ' ¥'; document.getElementById('totalCostMMK').innerText = totalMMK.toLocaleString('en-US') + ' Ks'; updateCargoDetailsTable(); saveData(); }
     
     function addDateInput(value = '') { dateCounter++; const div = document.createElement('div'); div.className = 'date-item'; div.id = `order-date-${dateCounter}`; div.innerHTML = `<input type="date" value="${value}" class="order-date-input"><div onclick="removeDateInput(${dateCounter})" class="remove-date-btn"><i class="fas fa-times"></i></div>`; orderDatesList.appendChild(div); div.querySelector('.order-date-input').addEventListener('input', recalculateAll); addTapFeedbackToElement(div.querySelector('.remove-date-btn')); recalculateAll(); }
     window.removeDateInput = (id) => { playTapFeedback(); document.getElementById(`order-date-${id}`)?.remove(); recalculateAll(); };
@@ -766,7 +850,6 @@
         const pageHeight = doc.internal.pageSize.getHeight(); 
         const margin = 15; 
         
-        // 修改 2：PDF 绘制背景的通用逻辑（支持多页自动添加）
         const applyBg = (d, img) => { 
             if(img) d.addImage(img, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST'); 
         }; 
@@ -800,7 +883,6 @@
             styles: { fontSize: 9, font: 'SourceHanSans', halign: 'center', textColor: [0,0,0] }, 
             headStyles: { fillColor: [0,0,0], textColor: [255,255,255], fontStyle: 'bold' }, 
             margin: { top: margin, bottom: 45 },
-            // 修改 2：修复订单多页时，自动在新页面添加背景图
             didAddPage: function (data) {
                 applyBg(doc, bgImageData);
             }
