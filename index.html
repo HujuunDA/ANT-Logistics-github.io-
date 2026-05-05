@@ -826,7 +826,7 @@ background:
     
     async function generatePdfBlob(progress) { 
         const { jsPDF } = window.jspdf; 
-        progress.update(10, "读取信息..."); 
+        progress.update(10, "Daterဖတ်ယူနေ..."); 
         const customerName = customerNameInput.value.trim(); 
         const orderDates = Array.from(document.querySelectorAll('.order-date-input')).map(inp => inp.value.trim()).filter(Boolean); 
         if (!customerName || orderDates.length === 0) throw new Error('Missing customer or dates'); 
@@ -874,7 +874,7 @@ background:
         const headers = ["No.", "Type", `Weight(kg/${kgRate}¥)`, "Dimensions(m)", `Volume(m³/${cbmRate}¥)`, "Freight(¥)"]; 
         const body = cargoData.map(i => i.type==='weight' ? [i.id, "By Weight", i.kg.toFixed(2), "-", "-", i.totalCost.toFixed(2)] : [i.id, "By Volume", "-", `${i.length.toFixed(3)}x${i.width.toFixed(3)}x${i.height.toFixed(3)}`, i.volume.toFixed(3), i.totalCost.toFixed(2)]); 
         
-        progress.update(40, "生成表格..."); 
+        progress.update(40, "ဇယားထုတ်နေသည်..."); 
         doc.autoTable({ 
             startY: yPos, 
             head: [headers], 
@@ -909,7 +909,7 @@ background:
         doc.text(`${totalMMK} Ks`, pageWidth-margin, finalY+28, {align:'right'}); 
         doc.setTextColor(0,0,0); 
 
-        progress.update(60, "处理图片..."); 
+        progress.update(60, "ဓါတ်ပုံလုပ်ဆောင်ခြင်း..."); 
         const idsWithImg = Object.keys(cargoImages).filter(id=>cargoImages[id]?.length); 
         if(idsWithImg.length){ 
             doc.addPage(); 
@@ -945,15 +945,15 @@ background:
                 } 
             } 
         } 
-        progress.update(95, "生成PDF..."); 
+        progress.update(95, "PDFထုတ်နေ..."); 
         const result = doc.output('blob'); 
-        progress.update(100, "完成!"); 
+        progress.update(100, "Finish!"); 
         await new Promise(r => setTimeout(r, 300)); 
         return result; 
     }
     
     let isExporting = false;
-    async function shareToTelegram() { if (isExporting) { playTapFeedback(); showModal('请稍等，上一任务还在处理中...'); return; } const customerName = customerNameInput.value.trim(); const orderDates = Array.from(document.querySelectorAll('.order-date-input')).map(inp => inp.value.trim()).filter(Boolean); if (!customerName || orderDates.length === 0) { playTapFeedback(); showModal('Please enter customer name and order date!'); return; } isExporting = true; const progress = showProgress("生成货运报告...", 5); try { playTapFeedback(); progress.update(5, "准备数据..."); await new Promise(r => setTimeout(r, 100)); const pdfBlob = await generatePdfBlob(progress); progress.update(98, "准备分享..."); const firstOrderDate = orderDates[0] || 'nodate'; const safeName = customerName.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_'); const fileName = `${safeName}_${firstOrderDate}_Freight.pdf`; const file = new File([pdfBlob], fileName, { type: 'application/pdf' }); if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ title: 'Freight Calculation', text: `Freight quote for ${customerName}`, files: [file] }); } else { const url = URL.createObjectURL(pdfBlob); const a = document.createElement('a'); a.href = url; a.download = fileName; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); showModal('PDF saved!'); } progress.close(); } catch (err) { console.error(err); progress.close(); showModal('Failed: ' + (err.message || 'Unknown error')); } finally { isExporting = false; } }
+    async function shareToTelegram() { if (isExporting) { playTapFeedback(); showModal('လုပ်ဆောင်နေဆဲ...'); return; } const customerName = customerNameInput.value.trim(); const orderDates = Array.from(document.querySelectorAll('.order-date-input')).map(inp => inp.value.trim()).filter(Boolean); if (!customerName || orderDates.length === 0) { playTapFeedback(); showModal('Please enter customer name and order date!'); return; } isExporting = true; const progress = showProgress("PDF ထုတ်နေသည်...", 5); try { playTapFeedback(); progress.update(5, "ပြင်ဆင်နေသည်..."); await new Promise(r => setTimeout(r, 100)); const pdfBlob = await generatePdfBlob(progress); progress.update(98, "shareရန်..."); const firstOrderDate = orderDates[0] || 'nodate'; const safeName = customerName.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_'); const fileName = `${safeName}_${firstOrderDate}_Freight.pdf`; const file = new File([pdfBlob], fileName, { type: 'application/pdf' }); if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ title: 'Freight Calculation', text: ` ${customerName}`, files: [file] }); } else { const url = URL.createObjectURL(pdfBlob); const a = document.createElement('a'); a.href = url; a.download = fileName; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); showModal('PDF saved!'); } progress.close(); } catch (err) { console.error(err); progress.close(); showModal('Failed: ' + (err.message || 'Unknown error')); } finally { isExporting = false; } }
     exportPdfBtn.addEventListener('click', async (e) => { e.preventDefault(); await shareToTelegram(); });
     loadData();
 })();
